@@ -1,0 +1,222 @@
+{
+  parserClass="com.kodepad.intellij.plugins.language.typescript.Parser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix=""
+  psiImplClassSuffix="Impl"
+  psiPackage="com.kodepad.intellij.plugins.language.typescript.psi"
+  psiImplPackage="com.kodepad.intellij.plugins.language.typescript.psi.impl"
+
+  elementTypeHolderClass="com.kodepad.intellij.plugins.language.typescript.psi.Types"
+  elementTypeClass="com.kodepad.intellij.plugins.language.typescript.psi.ElementType"
+  tokenTypeClass="com.kodepad.intellij.plugins.language.typescript.psi.TokenType"
+
+  psiImplUtilClass="com.kodepad.intellij.plugins.language.typescript.psi.impl.PsiImplUtil"
+
+  tokens = [
+    Comment = "Comment"
+    Punctuator = "Punctuator"
+    Template = "Template"
+    DivPunctuator = "DivPunctuator"
+    RightBracePunctuator = "RightBracePunctuator"
+  ]
+
+//  tokens = [
+//    // ReservedWord ::= (Keyword | FutureReservedWord | NullLiteral | BooleanLiteral)
+//    // Keyword ::= (break | case | catch | class | const | continue | debugger | default | delete | do | else | enum | export | extends | false | finally | for | function | if | import | in | instanceof | new | null | return | super | switch | this | throw | true | try | typeof | var | void | while | with | yield)
+//    // Keyword
+//	break   				= 'break'
+//	case	    			= 'case'
+//	catch		    		= 'catch'
+//	class			    	= 'class'
+//	const				    = 'const'
+//	continue				= 'continue'
+//	debugger				= 'debugger'
+//	default				    = 'default'
+//	delete  				= 'delete'
+//	do		    		    = 'do'
+//	else				    = 'else'
+//	enum				    = 'enum'
+//	export				    = 'export'
+//	extends				    = 'extends'
+//	false				    = 'false'
+//	finally			 	    = 'finally'
+//	for				        = 'for'
+//	function				= 'function'
+//	if				        = 'if'
+//	import				    = 'import'
+//	in				        = 'in'
+//	instanceof				= 'instanceof'
+//	new				        = 'new'
+//	null				    = 'null'
+//	return				    = 'return'
+//	super			    	= 'super'
+//	switch		    		= 'switch'
+//	this	    			= 'this'
+//	throw   				= 'throw'
+//	true				    = 'true'
+//	try			        	= 'try'
+//	typeof  				= 'typeof'
+//	var 	    			= 'var'
+//	void    				= 'void'
+//	while   				= 'while'
+//	with    				= 'with'
+//	yield				    = 'yield'
+//
+//    // FutureReservedWord
+//    enum                    = 'enum'
+//    await                   = 'await'
+//    implements              = 'implements'
+//    package                 = 'package'
+//    protected               = 'protected'
+//    interface               = 'interface'
+//    private                 = 'private'
+//    public                  = 'public'
+//
+//    //
+//
+//    EQUALS_SIGN             = '='
+//    OPEN_PARENTHESES        = '('
+//    CLOSE_PARENTHESES       = ')'
+//    SEMICOLON               = ';'
+//    COLON                   = ':'
+//    ASTERISK                = '*'
+//    LESS_THAN               = '<'
+//    GREATER_THAN            = '>'
+//    LESS_THAN_EQUAL         = '<='
+//    GREATER_THAN_EQUAL      = '>='
+//    COMMA                   = ','
+//    OPEN_BRACE              = '{'
+//    CLOSE_BRACE             = '}'
+//    OPEN_BRACKET            = '['
+//    CLOSE_BRACKET           = ']'
+//    ELIPSIS                 = '...'
+//    AMPERSAND               = '&'
+//    PERCENT                 = '%'
+//    PERIOD                  = '.'
+//    QUOTE                   = "'"
+//    DOUBLE_QUOTE            = '"'
+//    BACK_QUOTE              = '`'
+//    UNDERSCORE              = '_'
+//    TILDE                   = '~'
+//    SLASH                   = '/'
+//    BACK_SLASH              = '\'
+//    PIPE                    = '|'
+//    PLUS_SIGN               = '+'
+//    MINUS_SIGN              = '-'
+//    ADD_ASSIGN              = '+='
+//    SUBTRACT_ASSIGN         = '-='
+//    MULTIPLY_ASSIGN         = '*='
+//    DIVIDE_ASSIGN           = '/='
+//    LEFT_SHIFT_ASSIGN       = '<<='
+//    RIGHT_SHIFT_ASSIGN      = '>>='
+//    RIGHT_SHIFT_ZERO_ASSIGN = '>>>='
+//    PERCENT_ASSIGN          = '%='
+//    AND_ASSIGN              = '&='
+//    OR_ASSIGN               = '|='
+//    XOR_ASSIGN              = '^='
+//    EQUALITY                = '=='
+//    STRICT_EQUALITY         = '==='
+//    NON_EQUALITY            = '!='
+//    STRICT_NON_EQUALITY     = '!=='
+//    INCREMENT_SIGN          = '++'
+//    DECREMENT_SIGN          = '--'
+//    BITWISE_XOR             = '^'
+//    LOGICAL_OR              = '||'
+//    LOGICAL_AND             = '&&'
+//    LEFT_SHIFT              = '<<'
+//    RIGHT_SHIFT             = '>>'
+//    RIGHT_SHFIT_ZERO        = '>>>'
+//    DOLLAR                  = '$'
+//    QUESTION_MARK           = '?'
+//    EXCLAIMATION_MARK       = '!'
+//    ARROW_SYMBOL            = '=>'
+//    BINARY_SYMBOL_LOWER     = '0b'
+//    BINARY_SYMBOL_UPPER     = '0B'
+//    OCTAL_SYMBOL_LOWER      = '0o'
+//    OCTAL_SYMBOL_UPPER      = '0O'
+//    HEX_SYMBOL_LOWER        = '0x'
+//    HEX_SYMBOL_UPPER        = '0X'
+//    DIGIT_0                 = '0'
+//    DIGIT_1                 = '1'
+//    DIGIT_2                 = '2'
+//    DIGIT_3                 = '3'
+//    DIGIT_4                 = '4'
+//    DIGIT_5                 = '5'
+//    DIGIT_6                 = '6'
+//    DIGIT_7                 = '7'
+//    DIGIT_8                 = '8'
+//    DIGIT_9                 = '9'
+//    ALPHABET_A_LOWER        = 'a'
+//    ALPHABET_B_LOWER        = 'b'
+//    ALPHABET_C_LOWER        = 'c'
+//    ALPHABET_D_LOWER        = 'd'
+//    ALPHABET_E_LOWER        = 'e'
+//    ALPHABET_F_LOWER        = 'f'
+//    ALPHABET_N_LOWER        = 'n'
+//    ALPHABET_R_LOWER        = 'r'
+//    ALPHABET_T_LOWER        = 't'
+//    ALPHABET_U_LOWER        = 'u'
+//    ALPHABET_V_LOWER        = 'v'
+//    ALPHABET_X_LOWER        = 'x'
+//    ALPHABET_A_UPPER        = 'A'
+//    ALPHABET_B_UPPER        = 'B'
+//    ALPHABET_C_UPPER        = 'C'
+//    ALPHABET_D_UPPER        = 'D'
+//    ALPHABET_E_UPPER        = 'E'
+//    ALPHABET_F_UPPER        = 'F'
+//
+//    MISC_DOLLAR_CURL        = '${'
+//
+//    COMMENT = ''
+//
+//// todo: See if for unicode characters regexp: can be removed
+//    ZWNJ = 'regexp:\u200c'
+//    ZWJ = 'regexp:\u200d'
+//    TAB = 'regexp:\u0009'
+//    VT = 'regexp:\u000B'
+//    FF = 'regexp:\u000C'
+//    SP = 'regexp:\u0020'
+//    NBSP = 'regexp:\u00A0'
+//    ZWNBSP = 'regexp:\uFEFF'
+//    //USP = '\u'
+//    LF = 'regexp:\u000A'
+//    CR = 'regexp:\u000D'
+//    LS = 'regexp:\u2028'
+//    PS = 'regexp:\u2029'
+//    ID_Start            = 'regexp:\p{ID_Start}'
+//    Other_ID_Start      = 'regexp:\p{Other_ID_Start}'
+//    Unicode_Code_Point  = 'regexp:.'
+//    ID_Continue         = 'regexp:\p{ID_Continue}'
+//    Other_ID_Continue   = 'regexp:\p{Other_ID_Continue}'
+//
+//    // Conflicting Literals
+//    LITERAL_TYPE = 'type'
+//    LITERAL_CATCH = 'catch'
+//    LITERAL_FINALLY = 'finally'
+//  ]
+}
+
+message     ::=  [ "@" tags SPACE ] [ ":" prefix SPACE ] command
+                 [ params ] crlf
+
+  tags        ::=  tag *[ ";" tag ]
+  tag         ::=  key [ "=" value ]
+  key         ::=  [ vendor "/" ] 1*( ALPHA / DIGIT / "-" )
+  value       ::=  *valuechar
+  valuechar   ::=  <any octet except NUL, BELL, CR, LF, semicolon (`;`) and SPACE>
+  vendor      ::=  hostname
+
+  prefix      ::=  servername / ( nickname [ [ "!" user ] "@" host ] )
+
+  command     ::=  1*letter / 3digit
+
+  params      ::=  *( SPACE middle ) [ SPACE ":" trailing ]
+  nospcrlfcl  ::=  <any octet except NUL, CR, LF, colon (`:`) and SPACE>
+  middle      ::=  nospcrlfcl *( ":" / nospcrlfcl )
+  trailing    ::=  *( ":" / " " / nospcrlfcl )
+
+
+  SPACE       ::=  %x20 *( %x20 )   ; space character(s)
+  crlf        ::=  %x0D %x0A        ; "carriage return" "linefeed"

@@ -1,6 +1,8 @@
 package com.kodepad.irc.parser
 
 enum class Token {
+    IGNORE,
+
     // Non terminals
     Command,
     EscapedValue,
@@ -8,12 +10,15 @@ enum class Token {
     Key,
     Letter,
     Message,
+    Middle,
     Params,
     Prefix,
     Space,
     Tag,
     Tags,
+    Trailing,
     Vendor,
+    Value,
 
     // Terminals
     // Exact
@@ -23,5 +28,4 @@ enum class Token {
     // Regex
     Digit0To9Regex,
     HostAnyCharacterRegex,
-
 }

@@ -4,6 +4,7 @@ import com.kodepad.irc.parser.factory.ParserFactory
 import com.kodepad.irc.parser.ast.Ast
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.StringConstants.COLON
+import com.kodepad.irc.parser.Token
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -29,7 +30,7 @@ class MiddleParser(private val parserFactory: ParserFactory): Parser {
         }.parse(input)
 
         logger.debug("ast: $ast")
-        return ast
+        return ast.copy(token = Token.Middle)
     }
 
     override fun toString(): String = "${this::class.simpleName}"

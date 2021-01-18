@@ -2,11 +2,15 @@ package com.kodepad.irc.network.impl
 
 import com.kodepad.irc.channel.Channel
 import com.kodepad.irc.connection.Connection
-import com.kodepad.irc.network.Network
+import com.kodepad.irc.network.NetworkInterface
+import com.kodepad.irc.dto.NetworkState
 
-class NetworkImpl(hostname: String, port: Int): Network {
-    private val connection = Connection(hostname, port)
-
+open class NetworkImpl(
+    private val hostname: String,
+    private val port: Int,
+    private val networkState: NetworkState,
+    private val connection: Connection
+): NetworkInterface {
     override fun joinChannel(channelName: String, nick: String): Channel {
         TODO("Not yet implemented")
     }

@@ -36,7 +36,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 api("org.slf4j:slf4j-api:1.7.30")
             }
         }
@@ -44,6 +44,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
                 implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.14.0")
             }
         }

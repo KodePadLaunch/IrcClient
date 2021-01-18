@@ -16,7 +16,10 @@ class UserParser(private val parserFactory: ParserFactory): Parser {
         logger.debug("input: $input")
 
         val ast = with(parserFactory) {
-            getRegexParser(USER)
+            getMultipleOccurenceStrategyParser(
+                getRegexParser(USER),
+                1
+            )
         }.parse(input)
 
         logger.debug("ast: $ast")

@@ -1,7 +1,6 @@
 package com.kodepad.irc.parser.factory
 
 import com.kodepad.irc.parser.Parser
-import com.kodepad.irc.parser.Token
 import kotlin.reflect.KClass
 
 interface ParserFactory {

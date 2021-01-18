@@ -5,6 +5,7 @@ import com.kodepad.irc.parser.StringConstants.DIGIT
 import com.kodepad.irc.parser.factory.ParserFactory
 import com.kodepad.irc.parser.ast.Ast
 import com.kodepad.irc.parser.Parser
+import com.kodepad.irc.parser.Token
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -30,7 +31,7 @@ class CommandParser(private val parserFactory: ParserFactory) : Parser {
         }.parse(input)
 
         logger.debug("ast: $ast")
-        return ast
+        return ast.copy(token = Token.Command)
     }
 
     override fun toString(): String = "${this::class.simpleName}"

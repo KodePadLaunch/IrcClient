@@ -7,6 +7,7 @@ import com.kodepad.irc.parser.ast.Ast
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.StringConstants.DASH
 import com.kodepad.irc.parser.StringConstants.FORWARD_SLASH
+import com.kodepad.irc.parser.Token
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -39,7 +40,7 @@ class KeyParser(private val parserFactory: ParserFactory) : Parser {
         }.parse(input)
 
         logger.debug("ast: $ast")
-        return ast
+        return ast.copy(token = Token.Key)
     }
 
     override fun toString(): String = "${this::class.simpleName}"

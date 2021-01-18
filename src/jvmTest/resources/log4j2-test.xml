@@ -39,8 +39,9 @@
             <AppenderRef ref="File"/>
         </Logger>
 
-        <Root level="trace">
+        <Root level="info">
             <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="File" />
         </Root>
     </Loggers>
 </Configuration>

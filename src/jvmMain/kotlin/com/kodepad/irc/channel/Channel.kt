@@ -1,6 +1,6 @@
 package com.kodepad.irc.channel
 
-import com.kodepad.irc.vo.Message
+import com.kodepad.irc.dto.Message
 import kotlinx.coroutines.flow.*
 
 interface Channel {

@@ -5,6 +5,7 @@ import com.kodepad.irc.parser.ast.Ast
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.StringConstants.COLON
 import com.kodepad.irc.parser.StringConstants.SPACE
+import com.kodepad.irc.parser.Token
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -28,7 +29,7 @@ class TrailingParser(private val parserFactory: ParserFactory): Parser {
         }.parse(input)
 
         logger.debug("ast: $ast")
-        return ast
+        return ast.copy(token = Token.Trailing)
     }
 
     override fun toString(): String = "${this::class.simpleName}"

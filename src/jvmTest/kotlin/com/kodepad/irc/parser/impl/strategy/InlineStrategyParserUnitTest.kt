@@ -6,7 +6,6 @@ import com.kodepad.irc.parser.factory.ParserFactory
 import com.kodepad.irc.parser.factory.ParserAbstractFactoryImpl
 import com.kodepad.irc.parser.impl.HostParser
 import com.kodepad.irc.parser.impl.NicknameParser
-import com.kodepad.irc.parser.impl.ServerNameParser
 import com.kodepad.irc.parser.impl.UserParser
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

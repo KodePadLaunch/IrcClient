@@ -2,8 +2,8 @@ package com.kodepad.irc.parser.impl.strategy
 
 import com.kodepad.irc.parser.StringConstants.ALPHA
 import com.kodepad.irc.parser.exception.ParsingException
-import com.kodepad.irc.parser.factory.ParserFactory
 import com.kodepad.irc.parser.factory.ParserAbstractFactoryImpl
+import com.kodepad.irc.parser.factory.ParserFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.test.Test

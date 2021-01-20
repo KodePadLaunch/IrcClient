@@ -1,11 +1,11 @@
 package com.kodepad.irc.parser.impl
 
-import com.kodepad.irc.parser.factory.ParserFactory
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.StringConstants.AT
 import com.kodepad.irc.parser.StringConstants.COLON
 import com.kodepad.irc.parser.StringConstants.SPACE
 import com.kodepad.irc.parser.ast.Ast
+import com.kodepad.irc.parser.factory.ParserFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

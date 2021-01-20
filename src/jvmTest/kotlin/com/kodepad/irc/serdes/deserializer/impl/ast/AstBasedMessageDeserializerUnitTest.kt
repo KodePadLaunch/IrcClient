@@ -2,11 +2,11 @@ package com.kodepad.irc.serdes.deserializer.impl.ast
 
 import com.kodepad.irc.codec.decoder.impl.CharsetDecoderAdapter
 import com.kodepad.irc.codec.encoder.impl.CharsetEncoderAdapter
-import com.kodepad.irc.socket.impl.JavaNioAsynchronousSocket
 import com.kodepad.irc.dto.Message
 import com.kodepad.irc.parser.factory.ParserAbstractFactoryImpl
 import com.kodepad.irc.parser.impl.MessageParser
 import com.kodepad.irc.serdes.serializer.impl.MessageSerializer
+import com.kodepad.irc.socket.impl.JavaNioAsynchronousSocket
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

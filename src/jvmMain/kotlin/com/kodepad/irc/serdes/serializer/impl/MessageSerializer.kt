@@ -1,7 +1,7 @@
 package com.kodepad.irc.serdes.serializer.impl
 
-import com.kodepad.irc.serdes.serializer.Serializer
 import com.kodepad.irc.dto.Message
+import com.kodepad.irc.serdes.serializer.Serializer
 import org.slf4j.LoggerFactory
 
 class MessageSerializer: Serializer<Message> {

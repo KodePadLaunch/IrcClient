@@ -2,8 +2,8 @@ package com.kodepad.irc.parser.impl.strategy
 
 import com.kodepad.irc.parser.StringConstants.DIGIT
 import com.kodepad.irc.parser.exception.ParsingException
-import com.kodepad.irc.parser.factory.ParserFactory
 import com.kodepad.irc.parser.factory.ParserAbstractFactoryImpl
+import com.kodepad.irc.parser.factory.ParserFactory
 import com.kodepad.irc.parser.impl.HostParser
 import com.kodepad.irc.parser.impl.NicknameParser
 import com.kodepad.irc.parser.impl.UserParser

@@ -1,16 +1,22 @@
 package com.kodepad.irc.serdes.deserializer.impl.ast
 
-import com.kodepad.irc.serdes.deserializer.Deserializer
 import com.kodepad.irc.dto.Message
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.Token
 import com.kodepad.irc.parser.ast.Ast
-import com.kodepad.irc.parser.exception.ParsingException
+import com.kodepad.irc.serdes.deserializer.Deserializer
 import com.kodepad.irc.serdes.deserializer.impl.ast.exception.TokenNotFoundException
+import org.slf4j.LoggerFactory
 import java.util.*
 
 class AstBasedMessageDeserializer(private val messageParser: Parser): Deserializer<Message> {
+    companion object {
+        private val logger = LoggerFactory.getLogger(AstBasedMessageDeserializer::class.java)
+    }
+
     override fun deserialize(input: String): Message {
+        logger.debug("input: {}", input)
+
         val ast = messageParser.parse(input)
 
         val tags = getTags(ast)

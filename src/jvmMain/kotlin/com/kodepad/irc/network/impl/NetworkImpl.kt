@@ -2,8 +2,8 @@ package com.kodepad.irc.network.impl
 
 import com.kodepad.irc.channel.Channel
 import com.kodepad.irc.connection.Connection
-import com.kodepad.irc.network.NetworkInterface
 import com.kodepad.irc.dto.NetworkState
+import com.kodepad.irc.network.NetworkInterface
 
 open class NetworkImpl(
     private val hostname: String,

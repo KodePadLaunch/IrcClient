@@ -1,7 +1,5 @@
 package com.kodepad.irc.socket.factory
 
-import com.kodepad.irc.codec.CodecFactoryImpl
-import com.kodepad.irc.codec.Encoding
 import com.kodepad.irc.socket.Socket
 import com.kodepad.irc.socket.impl.JavaNioAsynchronousSocket
 import java.nio.channels.AsynchronousSocketChannel

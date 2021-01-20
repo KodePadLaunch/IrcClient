@@ -1,9 +1,9 @@
 package com.kodepad.irc.parser.impl
 
-import com.kodepad.irc.parser.factory.ParserFactory
-import com.kodepad.irc.parser.ast.Ast
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.StringConstants.DASH
+import com.kodepad.irc.parser.ast.Ast
+import com.kodepad.irc.parser.factory.ParserFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -28,8 +28,7 @@ class NicknameParser(private val parserFactory: ParserFactory): Parser {
                         get(SpecialParser::class),
                         getExactParser(DASH)
                     ),
-                    0,
-                    8
+                    0
                 )
             )
         }.parse(input)

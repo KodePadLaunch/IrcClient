@@ -7,21 +7,21 @@ import org.slf4j.LoggerFactory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ParamsParserUnitTest {
+class NicknameParserUnitTest {
     companion object {
-        val logger: Logger = LoggerFactory.getLogger(ParamsParserUnitTest::class.java)
+        val logger: Logger = LoggerFactory.getLogger(NicknameParserUnitTest::class.java)
     }
 
     private val parserFactory: ParserFactory = ParserAbstractFactoryImpl
-    private val parser = parserFactory.get(ParamsParser::class) as ParamsParser
+    private val parser = parserFactory.get(NicknameParser::class) as NicknameParser
 
     @Test
-    fun `parse SPACE LS STAR COLONmulti-prefix extended-join sasl as params`() {
-        val input = " LS * :multi-prefix extended-join sasl"
+    fun `parse dummykodepadnick in dummykodepadnick MODE dummykodepadnick COLON+i`() {
+        val input = "dummykodepadnick MODE dummykodepadnick :+i\r\n"
 
         val ast = parser.parse(input)
 
-        val expectedMatchedString = " LS * :multi-prefix extended-join sasl"
+        val expectedMatchedString = "dummykodepadnick"
         assertEquals(expectedMatchedString, ast.matchedString)
     }
 }

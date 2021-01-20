@@ -1,6 +1,7 @@
 package com.kodepad.irc.temp
 
-import java.io.*
+import java.io.InputStream
+import java.io.OutputStream
 import kotlin.test.Test
 
 class SocketUnitTest {

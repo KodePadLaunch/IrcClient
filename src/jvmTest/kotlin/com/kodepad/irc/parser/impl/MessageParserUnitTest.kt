@@ -1,7 +1,7 @@
 package com.kodepad.irc.parser.impl
 
-import com.kodepad.irc.parser.factory.ParserFactory
 import com.kodepad.irc.parser.factory.ParserAbstractFactoryImpl
+import com.kodepad.irc.parser.factory.ParserFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.test.Test
@@ -111,6 +111,16 @@ class MessageParserUnitTest {
         val ast = parser.parse(input)
 
         val expectedMatchedString = ":Angel PRIVMSG Wiz :Hello are you receiving this message ?\r\n"
+        assertEquals(expectedMatchedString, ast.matchedString)
+    }
+
+    @Test
+    fun `parsing example 11`() {
+        val input = ":dummykodepadnick MODE dummykodepadnick :+i\r\n"
+
+        val ast = parser.parse(input)
+
+        val expectedMatchedString = ":dummykodepadnick MODE dummykodepadnick :+i\r\n"
         assertEquals(expectedMatchedString, ast.matchedString)
     }
 }

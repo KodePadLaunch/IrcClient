@@ -4,9 +4,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
-import kotlin.test.Test
 import java.nio.channels.AsynchronousSocketChannel
 import java.nio.charset.Charset
+import kotlin.test.Test
 
 
 class AsynchronousSocketChannelTest {

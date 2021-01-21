@@ -1,6 +1,7 @@
 package com.kodepad.irc.parser.impl
 
 import com.kodepad.irc.parser.Parser
+import com.kodepad.irc.parser.StringConstants.HOST
 import com.kodepad.irc.parser.ast.Ast
 import com.kodepad.irc.parser.factory.ParserFactory
 import org.slf4j.Logger
@@ -14,10 +15,11 @@ class HostParser(private val parserFactory: ParserFactory): Parser {
     override fun parse(input: String): Ast {
         HostNameParser.logger.debug("input: $input")
 
+//        NOTE: Breaking the grammar to improve adaptibility
         val ast = with(parserFactory) {
-            getAnyOneParser(
-                get(HostNameParser::class),
-                get(HostAddrParser::class)
+            getMultipleOccurenceStrategyParser(
+                getRegexParser(HOST),
+                0
             )
         }.parse(input)
 

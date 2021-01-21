@@ -19,6 +19,7 @@ object StringConstants {
     const val NOSPCRLFCL = "[^$NUL$CR$LF$SPACE$COLON]"
     const val NOSPCRLFSCBL = "[^$NUL$BELL$CR$LF$SEMICOLON$SPACE]"
     const val USER = "[^$NUL$CR$LF$SPACE$AT]"
+    const val HOST = "[^$NUL$CR$LF$SPACE]"
     const val ANY_CHARACTER = "[a-zA-Z0-9:]"
     const val CRLF = "$CR$LF"
     const val DOT = "."

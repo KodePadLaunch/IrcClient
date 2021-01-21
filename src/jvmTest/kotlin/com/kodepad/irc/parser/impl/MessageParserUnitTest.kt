@@ -130,7 +130,17 @@ class MessageParserUnitTest {
 
         val ast = parser.parse(input)
 
-        val expectedMatchedString = ":freenode-connect!frigg@freenode/utility-bot/frigg NOTICE dummykodepadnick :Welcome to freenode. To protect the network all new connections will be scanned for vulnerabilities. This will not harm your computer, and vulnerable hosts will be notified.\n"
+        val expectedMatchedString = ":freenode-connect!frigg@freenode/utility-bot/frigg NOTICE dummykodepadnick :Welcome to freenode. To protect the network all new connections will be scanned for vulnerabilities. This will not harm your computer, and vulnerable hosts will be notified.\r\n"
+        assertEquals(expectedMatchedString, ast.matchedString)
+    }
+
+    @Test
+    fun `parsing example 13`() {
+        val input = ":dummykodepadnick!~ircclient@103.121.152.218 JOIN #ircclienttest\r\n"
+
+        val ast = parser.parse(input)
+
+        val expectedMatchedString = ":dummykodepadnick!~ircclient@103.121.152.218 JOIN #ircclienttest\r\n"
         assertEquals(expectedMatchedString, ast.matchedString)
     }
 }

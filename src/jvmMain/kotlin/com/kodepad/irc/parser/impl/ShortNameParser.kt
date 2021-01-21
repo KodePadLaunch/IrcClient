@@ -25,7 +25,9 @@ class ShortNameParser(private val parserFactory: ParserFactory): Parser {
                     getAnyOneParser(
                         get(LetterParser::class),
                         get(DigitParser::class),
-                        getExactParser("-")
+                        getExactParser("-"),
+                    // NOTE: The below parser additon is not part of the IRC spec, it's added to parse things like freenode/utility-bot/frigg as host
+                        getExactParser("/")
                     )
                 ),
                 getMultipleOccurenceStrategyParser(

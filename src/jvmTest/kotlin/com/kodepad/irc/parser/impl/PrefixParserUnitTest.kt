@@ -35,6 +35,7 @@ class PrefixParserUnitTest {
         val expectedMatchedString = "dan!d@localhost"
         assertEquals(expectedMatchedString, ast.matchedString)
     }
+
     @Test
     fun `parse dummykodepadnick as prefix in dummykodepadnick MODE dummykodepadnick COLON+i`() {
         val input = "dummykodepadnick MODE dummykodepadnick :+i\r\n"
@@ -42,6 +43,16 @@ class PrefixParserUnitTest {
         val ast = parser.parse(input)
 
         val expectedMatchedString = "dummykodepadnick"
+        assertEquals(expectedMatchedString, ast.matchedString)
+    }
+
+    @Test
+    fun `parse freenodeDASHconnectEXCLAIMATIONfriggATTHERATEfreenodeSLASHutilityDASHbotSLASHfrigg as prefix in freenodeDASHconnectEXCLAIMATIONfriggATTHERATEfreenodeSLASHutilityDASHbotSLASHfrigg NOTICE dummykodepadnick COLONWelcome to freenodeDOT To protect the network all new connections will be scanned for vulnerabilitiesDOT This will not harm your computerCOMMA and vulnerable hosts will be notifiedDOT`() {
+        val input = "freenode-connect!frigg@freenode/utility-bot/frigg NOTICE dummykodepadnick :Welcome to freenode. To protect the network all new connections will be scanned for vulnerabilities. This will not harm your computer, and vulnerable hosts will be notified.\r\n"
+
+        val ast = parser.parse(input)
+
+        val expectedMatchedString = "freenode-connect!frigg@freenode/utility-bot/frigg"
         assertEquals(expectedMatchedString, ast.matchedString)
     }
 }

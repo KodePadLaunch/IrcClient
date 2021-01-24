@@ -15,7 +15,7 @@ class CharsetDecoderAdapter(private val charset: Charset): Decoder {
     private val charsetDecoder: CharsetDecoder = charset.newDecoder()
 
     override fun decode(byteArray: ByteArray): String {
-        val charBuffer = charsetDecoder.decode(ByteBuffer.wrap(byteArray)).toString()
+        val charBuffer = charsetDecoder.decode(ByteBuffer.wrap(byteArray))
 
         return charBuffer.toString()
     }

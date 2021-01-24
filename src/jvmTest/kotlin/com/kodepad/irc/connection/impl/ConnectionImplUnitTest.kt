@@ -4,7 +4,7 @@ import com.kodepad.irc.codec.CodecFactoryImpl
 import com.kodepad.irc.codec.Encoding
 import com.kodepad.irc.dto.Message
 import com.kodepad.irc.serdes.SerdesMessageFactoryImpl
-import com.kodepad.irc.socket.factory.JavaNioAsynchronousSocketFactoryImpl
+import com.kodepad.irc.socket.factory.JavaNioSocketFactoryImpl
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ class ConnectionImplUnitTest {
     private val deserializer = SerdesMessageFactoryImpl.getDeserializer()
 
     private val connection = ConnectionImpl(
-        JavaNioAsynchronousSocketFactoryImpl.create(
+        JavaNioSocketFactoryImpl.create(
             hostname,
             port,
             encoder encode delimiter

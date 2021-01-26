@@ -9,6 +9,7 @@ import com.kodepad.irc.network.NetworkEventListener
 import com.kodepad.irc.network.impl.NetworkImpl
 import com.kodepad.irc.plugin.PluginFactory
 import com.kodepad.irc.plugin.impl.PluginHookImpl
+import com.kodepad.irc.plugin.impl.ping.PingPluginFactory
 import com.kodepad.irc.plugin.impl.registration.RegistrationPluginFactory
 import com.kodepad.irc.serdes.SerdesMessageFactoryImpl
 import com.kodepad.irc.socket.factory.JavaNioSocketFactoryImpl
@@ -28,7 +29,7 @@ class IrcClient: Client {
         user: User,
         networkEventListener: NetworkEventListener,
         encoding: Encoding,
-        pluginFactories: List<PluginFactory>
+        customPluginFactories: List<PluginFactory>
     ): Network {
         val networkState = NetworkState(
             user
@@ -52,7 +53,14 @@ class IrcClient: Client {
             networkState
         )
 
-        val plugins = (listOf(RegistrationPluginFactory) + pluginFactories).map { pluginFactory ->
+        val defaultPluginFactories = listOf(
+            RegistrationPluginFactory,
+            PingPluginFactory
+        )
+
+        val pluginFactories = defaultPluginFactories + customPluginFactories
+
+        val plugins = pluginFactories.map { pluginFactory ->
             pluginFactory.create(pluginHook)
         }
 

@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import kotlin.coroutines.EmptyCoroutineContext
 
 // todo: Test the shutdown logic
+// todo: This class is doing too much break it down
 open class NetworkImpl(
     private val user: User,
     private val networkEventListener: NetworkEventListener,
@@ -26,20 +27,32 @@ open class NetworkImpl(
         private val logger = LoggerFactory.getLogger(NetworkImpl::class.java)
     }
 //    private val messageFlow: Flow<Message> = connection.read()
+    private val pluginsForCommand: Map<String, List<Plugin>>
+    init {
+        val pluginsForCommandMutable = mutableMapOf<String, ArrayList<Plugin>>()
+
+        for(plugin in plugins) {
+            plugin.onInit()
+
+            for(command in plugin.registeredCommands()) {
+                pluginsForCommandMutable.getOrPut(command, { arrayListOf() }).add(plugin)
+            }
+        }
+
+        pluginsForCommand = HashMap(pluginsForCommandMutable)
+    }
 
     private val coroutineScope = CoroutineScope(EmptyCoroutineContext)
 
     init {
-        plugins.map { plugin ->
-            plugin.onInit()
-        }
-
         coroutineScope.launch {
             connection.read().collect { message ->
-                // todo: Implement a command based registration for plugins and only invoke if plugin registers for the command.
-                plugins.map { plugin ->
+                val plugins = pluginsForCommand[message.command]
+
+                plugins?.map { plugin ->
                     plugin.onServerMessage(message)
                 }
+
                 networkEventListener.onMessage(message)
             }
         }

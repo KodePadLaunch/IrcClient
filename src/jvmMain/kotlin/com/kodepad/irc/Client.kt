@@ -13,6 +13,6 @@ interface Client {
         user: User,
         networkEventListener: NetworkEventListener,
         encoding: Encoding = Encoding.UTF_8,
-        pluginFactories: List<PluginFactory> = listOf()
+        customPluginFactories: List<PluginFactory> = listOf()
     ): Network
 }

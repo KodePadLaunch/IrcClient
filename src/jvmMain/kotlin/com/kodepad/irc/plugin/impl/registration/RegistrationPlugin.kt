@@ -10,6 +10,8 @@ class RegistrationPlugin(private val pluginHook: PluginHook): Plugin {
         private val logger = LoggerFactory.getLogger(RegistrationPlugin::class.java)
     }
 
+    override fun registeredCommands(): List<String> = emptyList()
+
     override fun onInit() {
         val nickMessage = Message(
             null,

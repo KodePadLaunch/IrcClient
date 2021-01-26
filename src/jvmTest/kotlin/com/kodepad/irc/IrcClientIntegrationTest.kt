@@ -9,6 +9,7 @@ import java.lang.Thread.sleep
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 
+// try this with following servers freenode, unreal, ircu
 class IrcClientIntegrationTest {
     companion object {
         private val logger = LoggerFactory.getLogger(IrcClientIntegrationTest::class.java)
@@ -18,11 +19,9 @@ class IrcClientIntegrationTest {
     fun `register and send message to channel`() {
         logger.info("starting test")
 
-        val testCoroutineScope = CoroutineScope(EmptyCoroutineContext)
-
         val networkEventListener = object : NetworkEventListener {
             override fun onMessage(message: Message) {
-                logger.debug("message: {}", message)
+                logger.info("message: {}", message)
             }
         }
 

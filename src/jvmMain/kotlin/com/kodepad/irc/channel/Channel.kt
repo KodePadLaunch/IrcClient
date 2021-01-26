@@ -6,5 +6,4 @@ import kotlinx.coroutines.flow.Flow
 interface Channel: AutoCloseable {
     fun getName(): String
     fun sendMessage(message: String)
-    fun receiveMessage(): Flow<Message>
 }

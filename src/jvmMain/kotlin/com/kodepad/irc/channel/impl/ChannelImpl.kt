@@ -12,7 +12,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 class ChannelImpl(
     private val name: String,
     private val connection: Connection
-) : Channel {
+): Channel {
     companion object {
         private val logger = LoggerFactory.getLogger(ChannelImpl::class.java)
     }
@@ -33,10 +33,6 @@ class ChannelImpl(
         )
 
         connection.write(privmsg)
-    }
-
-    override fun receiveMessage(): Flow<Message> {
-        TODO("Not yet implemented")
     }
 
     override fun close() {

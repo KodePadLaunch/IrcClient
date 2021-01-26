@@ -1,26 +1,26 @@
 package com.kodepad.irc.network.impl
 
 import com.kodepad.irc.channel.Channel
-import com.kodepad.irc.channel.ChannelEventListener
 import com.kodepad.irc.channel.impl.ChannelImpl
 import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.dto.Message
-import com.kodepad.irc.dto.NetworkState
-import com.kodepad.irc.event.bus.EventBus
+import com.kodepad.irc.network.NetworkState
 import com.kodepad.irc.network.Network
 import com.kodepad.irc.network.NetworkEventListener
+import com.kodepad.irc.plugin.Plugin
 import com.kodepad.irc.vo.User
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import org.slf4j.LoggerFactory
 import kotlin.coroutines.EmptyCoroutineContext
 
+// todo: Test the shutdown logic
 open class NetworkImpl(
     private val user: User,
     private val networkEventListener: NetworkEventListener,
     private val networkState: NetworkState,
-    private val connection: Connection
+    private val connection: Connection,
+    private val plugins: List<Plugin>
 ) : Network {
     companion object {
         private val logger = LoggerFactory.getLogger(NetworkImpl::class.java)
@@ -30,38 +30,24 @@ open class NetworkImpl(
     private val coroutineScope = CoroutineScope(EmptyCoroutineContext)
 
     init {
+        plugins.map { plugin ->
+            plugin.onInit()
+        }
+
         coroutineScope.launch {
             connection.read().collect { message ->
+                // todo: Implement a command based registration for plugins and only invoke if plugin registers for the command.
+                plugins.map { plugin ->
+                    plugin.onServerMessage(message)
+                }
                 networkEventListener.onMessage(message)
             }
         }
-
-        // todo: Formalize this
-        val nickMessage = Message(
-            null,
-            null,
-            "NICK",
-            listOf(user.nickname)
-        )
-        val userMessage = Message(
-            null,
-            null,
-            "USER",
-            listOf(user.username, "0", "*", user.realname)
-        )
-
-        logger.debug("nickMessage: {}", nickMessage)
-        logger.debug("userMessage: {}", userMessage)
-
-        connection.write(nickMessage)
-        connection.write(userMessage)
     }
 
-    override fun getNick(): String {
-        TODO("Not yet implemented")
-    }
+    override fun getUser(): User = networkState.user
 
-    override fun joinChannel(name: String, channelEventListener: ChannelEventListener): Channel {
+    override fun joinChannel(name: String): Channel {
         val joinMessage = Message(
             null,
             null,
@@ -77,10 +63,6 @@ open class NetworkImpl(
             connection
         )
     }
-
-//    override fun joinChannelWithRegisteredNick(channelName: String, nick: String, password: String): Channel {
-//        TODO("Not yet implemented")
-//    }
 
     override fun close() {
         coroutineScope.cancel()

@@ -3,10 +3,13 @@ package com.kodepad.irc
 import com.kodepad.irc.codec.CodecFactoryImpl
 import com.kodepad.irc.codec.Encoding
 import com.kodepad.irc.connection.impl.ConnectionImpl
-import com.kodepad.irc.dto.NetworkState
+import com.kodepad.irc.network.NetworkState
 import com.kodepad.irc.network.Network
 import com.kodepad.irc.network.NetworkEventListener
 import com.kodepad.irc.network.impl.NetworkImpl
+import com.kodepad.irc.plugin.PluginFactory
+import com.kodepad.irc.plugin.impl.PluginHookImpl
+import com.kodepad.irc.plugin.impl.registration.RegistrationPluginFactory
 import com.kodepad.irc.serdes.SerdesMessageFactoryImpl
 import com.kodepad.irc.socket.factory.JavaNioSocketFactoryImpl
 import com.kodepad.irc.vo.User
@@ -17,9 +20,6 @@ class IrcClient: Client {
         private val logger = LoggerFactory.getLogger(IrcClient::class.java)
 
         const val DELIMITER = "\r\n"
-        val DEFAULT_NETWORK_STATE = NetworkState(
-            "dummy state"
-        )
     }
 
     override fun joinNetwork(
@@ -27,8 +27,13 @@ class IrcClient: Client {
         port: Int,
         user: User,
         networkEventListener: NetworkEventListener,
-        encoding: Encoding
+        encoding: Encoding,
+        pluginFactories: List<PluginFactory>
     ): Network {
+        val networkState = NetworkState(
+            user
+        )
+
         val connection = ConnectionImpl(
             JavaNioSocketFactoryImpl.create(
                 hostname,
@@ -41,11 +46,22 @@ class IrcClient: Client {
             SerdesMessageFactoryImpl.getDeserializer()
         )
 
+        val pluginHook = PluginHookImpl(
+            connection,
+            networkEventListener,
+            networkState
+        )
+
+        val plugins = (listOf(RegistrationPluginFactory) + pluginFactories).map { pluginFactory ->
+            pluginFactory.create(pluginHook)
+        }
+
         return NetworkImpl(
             user,
             networkEventListener,
-            DEFAULT_NETWORK_STATE,
-            connection
+            networkState,
+            connection,
+            plugins
         )
     }
 }

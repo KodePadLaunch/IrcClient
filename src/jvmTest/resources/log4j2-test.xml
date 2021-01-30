@@ -59,7 +59,7 @@
         <Logger name="com.kodepad.irc.parser" additivity="true">
             <AppenderRef ref="TopLevelParser" level="debug"/>
             <AppenderRef ref="ParserDebug" level="debug"/>
-            <AppenderRef ref="ParserTrace" level="debug"/>
+            <AppenderRef ref="ParserTrace" level="trace"/>
         </Logger>
 
         <Root level="debug">

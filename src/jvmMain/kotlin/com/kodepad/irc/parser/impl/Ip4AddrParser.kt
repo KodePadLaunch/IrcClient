@@ -15,7 +15,7 @@ class Ip4AddrParser(private val parserFactory: ParserFactory): Parser {
     }
 
     override fun parse(input: String): Ast {
-        logger.debug("input: $input")
+        logger.debug("input: {}", input)
 
         val ast = with(parserFactory) {
             getInlineParser(
@@ -45,7 +45,8 @@ class Ip4AddrParser(private val parserFactory: ParserFactory): Parser {
             )
         }.parse(input)
 
-        logger.debug("ast: $ast")
+        logger.debug("matchedString: {}", ast.matchedString)
+        logger.trace("ast: {}", ast)
         return ast
     }
 

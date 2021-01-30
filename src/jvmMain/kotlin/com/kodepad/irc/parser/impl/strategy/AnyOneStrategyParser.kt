@@ -12,8 +12,8 @@ class AnyOneStrategyParser(private vararg val parsers: Parser): Parser {
     }
 
     override fun parse(input: String): Ast {
-        logger.debug("parsers: ${parsers.toList()}")
-        logger.debug("input: $input")
+        logger.debug("parsers: {}", parsers.toList())
+        logger.debug("input: {}", input)
 
         parsers.forEach { parser ->
             try {
@@ -25,8 +25,8 @@ class AnyOneStrategyParser(private vararg val parsers: Parser): Parser {
                     true
                 )
 
-                logger.debug("ast: $ast")
-
+                logger.debug("matchedString: {}", ast.matchedString)
+                logger.trace("ast: {}", ast)
                 return ast
             } catch (parsingException: ParsingException) {}
         }

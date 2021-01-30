@@ -1,7 +1,9 @@
 package com.kodepad.irc.parser.impl
 
+import com.kodepad.irc.logging.Markers
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.StringConstants.SPACE
+import com.kodepad.irc.parser.Token
 import com.kodepad.irc.parser.ast.Ast
 import com.kodepad.irc.parser.exception.ParsingException
 import com.kodepad.irc.parser.factory.ParserFactory
@@ -15,22 +17,24 @@ class PrefixParser(private val parserFactory: ParserFactory) : Parser {
     }
 
     override fun parse(input: String): Ast {
-        logger.debug("input: $input")
+        logger.debug(Markers.TOP_LEVEL_PARSER, "input: {}", input)
 
         val prefixCandidateString = input.substringBefore(SPACE)
 
         try {
-            val firstBranchAst = with(parserFactory) {
+            val ast = with(parserFactory) {
                 get(ServerNameParser::class)
             }.parse(prefixCandidateString)
 
-            if(prefixCandidateString == firstBranchAst.matchedString) {
-                return firstBranchAst
+            if(prefixCandidateString == ast.matchedString) {
+                logger.debug(Markers.TOP_LEVEL_PARSER, "matchedString: {}", ast.matchedString)
+                logger.trace("ast: {}", ast)
+                return ast.copy(token = Token.Prefix)
             }
         } catch (parsingException: ParsingException) {}
 
         try {
-            val secondBranchAst = with(parserFactory) {
+            val ast = with(parserFactory) {
                     getInlineParser(
                         get(NicknameParser::class),
                         getOptionalParser(
@@ -48,8 +52,10 @@ class PrefixParser(private val parserFactory: ParserFactory) : Parser {
                     )
             }.parse(prefixCandidateString)
 
-            if(prefixCandidateString == secondBranchAst.matchedString) {
-                return secondBranchAst
+            if(prefixCandidateString == ast.matchedString) {
+                logger.debug(Markers.TOP_LEVEL_PARSER, "matchedString: {}", ast.matchedString)
+                logger.trace("ast: {}", ast)
+                return ast.copy(token = Token.Prefix)
             }
         } catch (parsingException: ParsingException) { }
 

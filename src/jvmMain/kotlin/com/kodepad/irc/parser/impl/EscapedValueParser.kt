@@ -13,7 +13,8 @@ class EscapedValueParser(parserFactory: ParserFactory): Parser {
     }
 
     override fun parse(input: String): Ast {
-        logger.debug("input: $input")
+        logger.debug("input: {}", input)
+
         TODO("Implement parse")
     }
 

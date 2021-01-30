@@ -16,8 +16,8 @@ open class MultipleOccurenceStrategyParser(
     }
 
     override fun parse(input: String): Ast {
-        logger.debug("($parser, $min, $max)")
-        logger.debug("input: $input")
+        logger.debug("({}, {}, {})", parser, min, max)
+        logger.debug("input: {}", input)
 
         val parsedProductions = ArrayList<Ast>()
         var parsedLength = 0
@@ -40,7 +40,9 @@ open class MultipleOccurenceStrategyParser(
         }
 
         val ast = Ast(input.substring(0, parsedLength), parsedProductions, true)
-        logger.debug("ast: $ast")
+
+        logger.debug("matchedString: {}", ast.matchedString)
+        logger.trace("ast: {}", ast)
         return ast
     }
 

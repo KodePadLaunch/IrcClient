@@ -1,5 +1,6 @@
 package com.kodepad.irc.parser.impl
 
+import com.kodepad.irc.logging.Markers
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.StringConstants.AT
 import com.kodepad.irc.parser.StringConstants.COLON
@@ -16,7 +17,7 @@ class MessageParser(private val parserFactory: ParserFactory): Parser {
     }
 
     override fun parse(input: String): Ast {
-        logger.debug("input: $input")
+        logger.debug(Markers.TOP_LEVEL_PARSER, "INPUT: {}", input)
 
         val ast = with(parserFactory) {
             getInlineParser(
@@ -42,7 +43,8 @@ class MessageParser(private val parserFactory: ParserFactory): Parser {
             )
         }.parse(input)
 
-        logger.debug("ast: $ast")
+        logger.debug(Markers.TOP_LEVEL_PARSER, "matchedString: {}", ast.matchedString)
+        logger.trace("ast: {}", ast)
         return ast
     }
 

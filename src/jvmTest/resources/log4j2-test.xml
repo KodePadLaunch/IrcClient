@@ -2,46 +2,70 @@
 <Configuration status="debug" strict="true" name="IrcClientTestConfig"
                packages="org.apache.logging.log4j.test">
     <Properties>
-        <Property name="filename">target/test.log</Property>
-        <Property name="pattern">%-5p [%t] %c{1}: %m%n</Property>
+        <Property name="defaultPattern">%d{dd/MM/yyyy} [%-5p] [%t] %c{1}: %m%n</Property>
+        <Property name="patternWithoutThread">%d{dd/MM/yyyy} [%-5p] %c{1}: %m%n</Property>
     </Properties>
     <Filter type="ThresholdFilter" level="trace"/>
 
     <Appenders>
         <Appender type="Console" name="STDOUT">
-            <Layout type="PatternLayout" pattern="${pattern}"/>
+            <Layout type="PatternLayout" pattern="${defaultPattern}"/>
             <Filters>
                 <Filter type="MarkerFilter" marker="FLOW" onMatch="DENY" onMismatch="NEUTRAL"/>
                 <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
             </Filters>
         </Appender>
         <Appender type="Console" name="FLOW">
-            <Layout type="PatternLayout" pattern="${pattern}"/><!-- class and line number -->
+            <Layout type="PatternLayout" pattern="${defaultPattern}"/><!-- class and line number -->
             <Filters>
                 <Filter type="MarkerFilter" marker="FLOW" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
                 <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
         </Appender>
-        <Appender type="File" name="File" fileName="${filename}">
-            <Layout type="PatternLayout" pattern="${pattern}" />
+
+        <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="FullInfo" threshold="" fileName="target/full-info-test.log">
+            <Layout type="PatternLayout" pattern="${defaultPattern}" />
+        </Appender>
+        <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="FullDebug" fileName="target/full-debug-test.log">
+            <Layout type="PatternLayout" pattern="${defaultPattern}" />
+        </Appender>
+        <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="Serializer" fileName="target/serializer-test.log">
+            <Layout type="PatternLayout" pattern="${patternWithoutThread}" />
+        </Appender>
+        <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="Deserializer" fileName="target/deserializer-test.log">
+            <Layout type="PatternLayout" pattern="${patternWithoutThread}" />
+        </Appender>
+        <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="TopLevelParser" fileName="target/top-level-parser-test.log">
+            <Layout type="PatternLayout" pattern="${patternWithoutThread}" />
+            <Filters>
+                <Filter type="MarkerFilter" marker="TOP_LEVEL_PARSER" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Appender>
+        <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="ParserDebug" fileName="target/parser-debug-test.log">
+            <Layout type="PatternLayout" pattern="${patternWithoutThread}" />
+        </Appender>
+        <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="ParserTrace" fileName="target/parser-trace-test.log">
+            <Layout type="PatternLayout" pattern="${patternWithoutThread}" />
         </Appender>
     </Appenders>
 
     <Loggers>
-        <Logger name="org.apache.logging.log4j.test1" level="debug" additivity="false">
-            <Filter type="ThreadContextMapFilter">
-                <KeyValuePair key="test" value="123"/>
-            </Filter>
-            <AppenderRef ref="STDOUT"/>
+        <Logger name="com.kodepad.irc.serdes.serializer" additivity="true">
+            <AppenderRef ref="Serializer" level="debug"/>
         </Logger>
-
-        <Logger name="org.apache.logging.log4j.test2" level="debug" additivity="false">
-            <AppenderRef ref="File"/>
+        <Logger name="com.kodepad.irc.serdes.deserializer" additivity="true">
+            <AppenderRef ref="Deserializer" level="debug"/>
+        </Logger>
+        <Logger name="com.kodepad.irc.parser" additivity="true">
+            <AppenderRef ref="TopLevelParser" level="debug"/>
+            <AppenderRef ref="ParserDebug" level="debug"/>
+            <AppenderRef ref="ParserTrace" level="debug"/>
         </Logger>
 
         <Root level="debug">
             <AppenderRef ref="STDOUT"/>
-            <AppenderRef ref="File" />
+            <AppenderRef ref="FullInfo" level="info" />
+            <AppenderRef ref="FullDebug" level="debug" />
         </Root>
     </Loggers>
 </Configuration>

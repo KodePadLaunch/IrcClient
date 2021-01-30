@@ -41,7 +41,7 @@ class IrcClientIntegrationTest {
         val channel = network.joinChannel("#ircclienttest")
         channel.sendMessage("hello, world from IrcClient!")
 
-        sleep(30_000)
+        sleep(60_000)
 
         channel.close()
         network.close()

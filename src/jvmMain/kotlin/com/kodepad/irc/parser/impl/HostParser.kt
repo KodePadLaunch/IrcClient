@@ -13,7 +13,7 @@ class HostParser(private val parserFactory: ParserFactory): Parser {
     }
 
     override fun parse(input: String): Ast {
-        HostNameParser.logger.debug("input: $input")
+        logger.debug("input: {}", input)
 
 //        NOTE: Breaking the grammar to improve adaptibility
         val ast = with(parserFactory) {
@@ -23,7 +23,8 @@ class HostParser(private val parserFactory: ParserFactory): Parser {
             )
         }.parse(input)
 
-        logger.debug("ast: $ast")
+        logger.debug("matchedString: {}", ast.matchedString)
+        logger.trace("ast: {}", ast)
         return ast
     }
 

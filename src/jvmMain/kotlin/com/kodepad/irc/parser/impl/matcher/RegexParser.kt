@@ -15,16 +15,16 @@ class RegexParser(private val pattern: String): Parser {
     private val regex = "^$pattern".toRegex()
 
     override fun parse(input: String): Ast {
-        logger.debug("pattern: $pattern")
-        logger.debug("input: $input")
+        logger.debug("pattern: {}", pattern)
+        logger.debug("input: {}", input)
 
         val matchResult = regex.find(input)
         val match = matchResult?.value?:throw ParsingException("Could not match ${regex.pattern} regex pattern!")
 
         val ast = Ast(match, emptyList(), true)
 
-        logger.debug("ast: $ast")
-
+        logger.debug("matchedString: {}", ast.matchedString)
+        logger.trace("ast: {}", ast)
         return ast
     }
 

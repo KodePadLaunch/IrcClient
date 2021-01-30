@@ -26,8 +26,8 @@ class InlineStrategyParser(private vararg val parsers: Parser) : Parser {
 
         val ast = Ast(input.substring(0, parsedLength), parsedProductions, true)
 
-        logger.debug("ast: $ast")
-
+        logger.debug("matchedString: {}", ast.matchedString)
+        logger.trace("ast: {}", ast)
         return ast
     }
 

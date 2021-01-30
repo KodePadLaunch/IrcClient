@@ -23,8 +23,10 @@ class AstBasedMessageDeserializer(private val messageParser: Parser): Deserializ
         val source = getSource(ast)
         val command = getCommand(ast)
         val parameters = getParameters(ast)
+        val message = Message(tags, source, command, parameters)
 
-        return Message(tags, source, command, parameters)
+        logger.debug("message: {}", message)
+        return message
     }
 
     private fun getTags(ast: Ast): Map<String, String?>? {

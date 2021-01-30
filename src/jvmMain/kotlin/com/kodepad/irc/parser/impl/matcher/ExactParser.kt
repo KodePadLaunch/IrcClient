@@ -13,8 +13,8 @@ class ExactParser(private val terminal: String): Parser {
     }
 
     override fun parse(input: String): Ast {
-        logger.debug("terminal: $terminal")
-        logger.debug("input: $input")
+        logger.debug("terminal: {}", terminal)
+        logger.debug("input: {}", input)
 
         val ast = if (input.startsWith(terminal)) {
             Ast(terminal, emptyList(), true)
@@ -22,7 +22,8 @@ class ExactParser(private val terminal: String): Parser {
             throw ParsingException("$terminal missing!")
         }
 
-        logger.debug("ast: $ast")
+        logger.debug("matchedString: {}", ast.matchedString)
+        logger.trace("ast: {}", ast)
         return ast
     }
 

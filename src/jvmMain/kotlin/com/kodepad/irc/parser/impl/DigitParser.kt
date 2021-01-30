@@ -14,13 +14,14 @@ class DigitParser(private val parserFactory: ParserFactory): Parser {
     }
 
     override fun parse(input: String): Ast {
-        logger.debug("input: $input")
+        logger.debug("input: {}", input)
 
         val ast = with(parserFactory) {
             getRegexParser(DIGIT)
         }.parse(input)
 
-        logger.debug("ast: $ast")
+        logger.debug("matchedString: {}", ast.matchedString)
+        logger.trace("ast: {}", ast)
         return ast
     }
 

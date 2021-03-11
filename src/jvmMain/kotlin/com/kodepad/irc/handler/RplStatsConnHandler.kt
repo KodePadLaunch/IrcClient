@@ -3,9 +3,9 @@ package com.kodepad.irc.handler
 import com.kodepad.irc.message.Message
 import org.slf4j.LoggerFactory
 
-class PrivmsgHandler() : Handler {
+class RplStatsConnHandler() : Handler {
     companion object {
-        private val logger = LoggerFactory.getLogger(PrivmsgHandler::class.java)
+        private val logger = LoggerFactory.getLogger(RplStatsConnHandler::class.java)
     }
 
       override suspend fun onMessage(message: Message) {

@@ -30,6 +30,12 @@
                 <Filter type="MarkerFilter" marker="TOP_LEVEL_PARSER" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
         </Appender>
+        <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="TestFlow" fileName="target/test-flow-test.log">
+            <Layout type="PatternLayout" pattern="${patternWithoutThread}" />
+            <Filters>
+                <Filter type="MarkerFilter" marker="TEST_FLOW" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Appender>
         <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="ParserDebug" fileName="target/parser-debug-test.log">
             <Layout type="PatternLayout" pattern="${patternWithoutThread}" />
         </Appender>
@@ -55,6 +61,7 @@
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="FullInfo" level="info" />
             <AppenderRef ref="FullDebug" level="debug" />
+            <AppenderRef ref="TestCode" level="trace" />
         </Root>
     </Loggers>
 </Configuration>

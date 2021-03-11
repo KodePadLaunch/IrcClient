@@ -1,18 +1,23 @@
 package com.kodepad.irc.handler
 
 import com.kodepad.irc.connection.Connection
+import com.kodepad.irc.event.EventListener
+import com.kodepad.irc.message.client.sending.Notice
+import com.kodepad.irc.message.client.sending.PrivMsg
 import com.kodepad.irc.network.NetworkState
 
 class CommandHandlerFactory(
         private val connection: Connection,
-        private val networkState: NetworkState
+        private val networkState: NetworkState,
+        private val noticeEventListener: EventListener<Notice>?,
+        private val privMsgEventListener: EventListener<PrivMsg>?,
         ) {
     fun getHandler(command: Command): Handler {
         return when(command) {
             Command.COMMAND_PING -> PingHandler(connection, networkState)
-            Command.COMMAND_NOTICE -> NoticeHandler()
+            Command.COMMAND_NOTICE -> NoticeHandler(noticeEventListener)
             Command.COMMAND_MODE -> ModeHandler()
-            Command.COMMAND_PRIVMSG -> PrivmsgHandler()
+            Command.COMMAND_PRIVMSG -> PrivMsgHandler(privMsgEventListener)
             Command.COMMAND_JOIN -> JoinHandler()
             Command.COMMAND_001 -> RplWelcomeHandler()
             Command.COMMAND_002 -> RplYourHostHandler()
@@ -21,6 +26,7 @@ class CommandHandlerFactory(
             Command.COMMAND_005 -> RplISupportHandler()
             Command.COMMAND_010 -> RplBounceHandler()
             Command.COMMAND_221 -> RplUModeIsHandler()
+            Command.COMMAND_250 -> RplStatsConnHandler()
             Command.COMMAND_251 -> RplLUserClientHandler()
             Command.COMMAND_252 -> RplLUserOpHandler()
             Command.COMMAND_253 -> RplLUserUnknownHandler()

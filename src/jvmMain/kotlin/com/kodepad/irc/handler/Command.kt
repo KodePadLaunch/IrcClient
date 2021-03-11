@@ -13,6 +13,7 @@ enum class Command {
     COMMAND_005,
     COMMAND_010,
     COMMAND_221,
+    COMMAND_250,
     COMMAND_251,
     COMMAND_252,
     COMMAND_253,

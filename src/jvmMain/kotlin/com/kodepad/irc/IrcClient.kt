@@ -3,11 +3,12 @@ package com.kodepad.irc
 import com.kodepad.irc.codec.CodecFactory
 import com.kodepad.irc.codec.Encoding
 import com.kodepad.irc.connection.ConnectionImpl
-import com.kodepad.irc.event.ConnectEventListener
-import com.kodepad.irc.event.MessageEventListener
+import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.handler.CommandHandlerFactory
 import com.kodepad.irc.handler.MessageHandler
 import com.kodepad.irc.message.Message
+import com.kodepad.irc.message.client.sending.Notice
+import com.kodepad.irc.message.client.sending.PrivMsg
 import com.kodepad.irc.network.Network
 import com.kodepad.irc.network.NetworkImpl
 import com.kodepad.irc.network.NetworkState
@@ -28,8 +29,9 @@ class IrcClient : Client {
         port: Int,
         user: User,
         encoding: Encoding,
-        messageEventListener: MessageEventListener?,
-        connectEventListener: ConnectEventListener?
+        noticeEventListener: EventListener<Notice>?,
+        privMsgEventListener: EventListener<PrivMsg>?,
+        rawMessageEventListener: EventListener<Message>?,
     ): Network {
         logger.debug("joinNetwork called!")
 
@@ -47,10 +49,10 @@ class IrcClient : Client {
                 SerDesFactory.getSerdes(Message::class),
         )
 
-        val commandHandlerFactory = CommandHandlerFactory(connection, networkState)
+        val commandHandlerFactory = CommandHandlerFactory(connection, networkState, noticeEventListener, privMsgEventListener)
 
         val messageHandler = MessageHandler(
-                messageEventListener,
+                rawMessageEventListener,
                 commandHandlerFactory
         )
 

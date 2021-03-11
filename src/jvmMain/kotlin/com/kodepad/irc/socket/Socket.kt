@@ -1,9 +1,9 @@
 package com.kodepad.irc.socket
 
-import kotlinx.coroutines.flow.Flow
 import java.io.Closeable
 
 interface Socket: Closeable {
-    fun read(): Flow<ByteArray>
-    fun write(byteArray: ByteArray)
+    suspend fun open()
+    suspend fun read(): ByteArray
+    suspend fun write(byteArray: ByteArray): Int
 }

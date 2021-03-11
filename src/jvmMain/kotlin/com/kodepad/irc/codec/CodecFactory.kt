@@ -1,9 +1,11 @@
 package com.kodepad.irc.codec
 
-import com.kodepad.irc.codec.decoder.Decoder
-import com.kodepad.irc.codec.encoder.Encoder
+import com.kodepad.irc.exception.codec.UnsupportedEncodingException
+import java.nio.charset.Charset
 
-interface CodecFactory {
-    fun getEncoder(encoding: Encoding): Encoder
-    fun getDecoder(encoding: Encoding): Decoder
+object CodecFactory {
+    fun getCodec(encoding: Encoding): Codec = when(encoding) {
+        Encoding.UTF_8 -> CharsetCodecBridge(Charset.forName("UTF-8"))
+        else -> throw UnsupportedEncodingException("Encoding is not supported yet!")
+    }
 }

@@ -1,22 +1,22 @@
 package com.kodepad.irc
 
-import com.kodepad.irc.codec.CodecFactoryImpl
+import com.kodepad.irc.codec.CodecFactory
 import com.kodepad.irc.codec.Encoding
-import com.kodepad.irc.connection.impl.ConnectionImpl
-import com.kodepad.irc.network.NetworkState
+import com.kodepad.irc.connection.ConnectionImpl
+import com.kodepad.irc.event.ConnectEventListener
+import com.kodepad.irc.event.MessageEventListener
+import com.kodepad.irc.handler.CommandHandlerFactory
+import com.kodepad.irc.handler.MessageHandler
+import com.kodepad.irc.message.Message
 import com.kodepad.irc.network.Network
-import com.kodepad.irc.network.NetworkEventListener
-import com.kodepad.irc.network.impl.NetworkImpl
-import com.kodepad.irc.plugin.PluginFactory
-import com.kodepad.irc.plugin.impl.PluginHookImpl
-import com.kodepad.irc.plugin.impl.ping.PingPluginFactory
-import com.kodepad.irc.plugin.impl.registration.RegistrationPluginFactory
-import com.kodepad.irc.serdes.SerdesMessageFactoryImpl
-import com.kodepad.irc.socket.factory.JavaNioSocketFactoryImpl
+import com.kodepad.irc.network.NetworkImpl
+import com.kodepad.irc.network.NetworkState
+import com.kodepad.irc.serdes.SerDesFactory
+import com.kodepad.irc.socket.nio.JavaNioSocketFactoryImpl
 import com.kodepad.irc.vo.User
 import org.slf4j.LoggerFactory
 
-class IrcClient: Client {
+class IrcClient : Client {
     companion object {
         private val logger = LoggerFactory.getLogger(IrcClient::class.java)
 
@@ -27,49 +27,37 @@ class IrcClient: Client {
         hostname: String,
         port: Int,
         user: User,
-        networkEventListener: NetworkEventListener,
         encoding: Encoding,
-        customPluginFactories: List<PluginFactory>
+        messageEventListener: MessageEventListener?,
+        connectEventListener: ConnectEventListener?
     ): Network {
+        logger.debug("joinNetwork called!")
+
         val networkState = NetworkState(
-            user
+                user
         )
 
         val connection = ConnectionImpl(
-            JavaNioSocketFactoryImpl.create(
-                hostname,
-                port,
-                CodecFactoryImpl.getEncoder(encoding).encode(DELIMITER)
-            ),
-            CodecFactoryImpl.getEncoder(encoding),
-            CodecFactoryImpl.getDecoder(encoding),
-            SerdesMessageFactoryImpl.getSerializer(),
-            SerdesMessageFactoryImpl.getDeserializer()
+                JavaNioSocketFactoryImpl.create(
+                        hostname,
+                        port,
+                        CodecFactory.getCodec(encoding).encode(DELIMITER)
+                ),
+                CodecFactory.getCodec(encoding),
+                SerDesFactory.getSerdes(Message::class),
         )
 
-        val pluginHook = PluginHookImpl(
-            connection,
-            networkEventListener,
-            networkState
+        val commandHandlerFactory = CommandHandlerFactory(connection, networkState)
+
+        val messageHandler = MessageHandler(
+                messageEventListener,
+                commandHandlerFactory
         )
-
-        val defaultPluginFactories = listOf(
-            RegistrationPluginFactory,
-            PingPluginFactory
-        )
-
-        val pluginFactories = defaultPluginFactories + customPluginFactories
-
-        val plugins = pluginFactories.map { pluginFactory ->
-            pluginFactory.create(pluginHook)
-        }
 
         return NetworkImpl(
-            user,
-            networkEventListener,
-            networkState,
-            connection,
-            plugins
+                networkState,
+                connection,
+                messageHandler
         )
     }
 }

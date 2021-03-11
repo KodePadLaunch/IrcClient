@@ -1,8 +1,8 @@
 package com.kodepad.irc.parser.impl.strategy
 
+import com.kodepad.irc.exception.parser.ParsingException
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.ast.Ast
-import com.kodepad.irc.parser.exception.ParsingException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

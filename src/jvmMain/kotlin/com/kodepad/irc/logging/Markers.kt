@@ -1,6 +1,6 @@
 package com.kodepad.irc.logging
 
-import com.kodepad.irc.logging.exception.GetMarkerException
+import com.kodepad.irc.exception.logger.GetMarkerException
 import org.slf4j.MarkerFactory
 
 object Markers {

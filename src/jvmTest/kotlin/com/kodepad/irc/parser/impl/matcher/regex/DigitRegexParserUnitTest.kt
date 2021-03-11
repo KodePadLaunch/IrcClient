@@ -2,7 +2,7 @@ package com.kodepad.irc.parser.impl.matcher.regex
 
 import com.kodepad.irc.parser.StringConstants.DIGIT
 import com.kodepad.irc.parser.ast.Ast
-import com.kodepad.irc.parser.exception.ParsingException
+import com.kodepad.irc.exception.parser.ParsingException
 import com.kodepad.irc.parser.factory.ParserAbstractFactoryImpl
 import com.kodepad.irc.parser.factory.ParserFactory
 import org.slf4j.Logger

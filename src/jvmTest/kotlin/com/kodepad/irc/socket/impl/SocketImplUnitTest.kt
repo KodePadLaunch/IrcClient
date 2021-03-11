@@ -1,7 +1,7 @@
 package com.kodepad.irc.socket.impl
 
 import com.kodepad.irc.socket.Socket
-import com.kodepad.irc.socket.factory.JavaNioSocketFactoryImpl
+import com.kodepad.irc.socket.nio.JavaNioSocketFactoryImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.CharBuffer
@@ -30,24 +30,5 @@ class SocketImplUnitTest {
     @Test
     fun `read from socket`() {
         logger.debug("started test")
-
-//        runBlocking {
-//            logger.debug("Calling connect")
-//            logger.debug("Calling read")
-//            connection.read().map { byteArray: ByteArray ->
-//                logger.debug("got byte array")
-//                val outputCharBuffer = charsetUTF8Decoder.decode(ByteBuffer.wrap(byteArray))
-//
-//                val position = outputCharBuffer.position()
-//                val limit = outputCharBuffer.limit()
-//                logger.debug("position: {}", position)
-//                logger.debug("limit: {}", limit)
-//                val outputString = outputCharBuffer.toString()
-//                logger.debug("outputString: {}", outputString)
-//
-//                outputCharBuffer.clear()
-//            }.collect()
-//            logger.debug("read returned")
-//        }
     }
 }

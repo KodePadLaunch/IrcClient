@@ -19,13 +19,4 @@ enum class Token {
     Trailing,
     Vendor,
     Value,
-
-    // Terminals
-    // Exact
-    MessageAtSignExact,
-    MessageColonSignExact,
-
-    // Regex
-    Digit0To9Regex,
-    HostAnyCharacterRegex,
 }

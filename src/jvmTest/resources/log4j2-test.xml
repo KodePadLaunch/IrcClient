@@ -10,17 +10,6 @@
     <Appenders>
         <Appender type="Console" name="STDOUT">
             <Layout type="PatternLayout" pattern="${defaultPattern}"/>
-            <Filters>
-                <Filter type="MarkerFilter" marker="FLOW" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
-            </Filters>
-        </Appender>
-        <Appender type="Console" name="FLOW">
-            <Layout type="PatternLayout" pattern="${defaultPattern}"/><!-- class and line number -->
-            <Filters>
-                <Filter type="MarkerFilter" marker="FLOW" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
-                <Filter type="MarkerFilter" marker="EXCEPTION" onMatch="ACCEPT" onMismatch="DENY"/>
-            </Filters>
         </Appender>
 
         <Appender append="false" bufferedIO="true" bufferSize="8192" type="File" name="FullInfo" threshold="" fileName="target/full-info-test.log">
@@ -50,10 +39,10 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="com.kodepad.irc.serdes.serializer" additivity="true">
+        <Logger name="com.kodepad.irc.serdes" additivity="true">
             <AppenderRef ref="Serializer" level="debug"/>
         </Logger>
-        <Logger name="com.kodepad.irc.serdes.deserializer" additivity="true">
+        <Logger name="com.kodepad.irc.deserializer" additivity="true">
             <AppenderRef ref="Deserializer" level="debug"/>
         </Logger>
         <Logger name="com.kodepad.irc.parser" additivity="true">

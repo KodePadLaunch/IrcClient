@@ -51,11 +51,14 @@ class JavaNioSocketImpl(
             }
         }
 
+        logger.debug("byteArrayList: $byteArrayList")
+
         return byteArrayList.toByteArray()
     }
 
     override suspend fun write(byteArray: ByteArray): Int {
         logger.debug("write called!")
+        logger.debug("byteArray: ${byteArray.toList()}")
 
         outputByteBuffer.clear()
 

@@ -42,6 +42,21 @@ class SerDesImpl(private val messageParser: Parser): SerDes<Message> {
         return messageString.toString()
     }
 
+    override fun deserialize(input: String): Message {
+        logger.debug("input: {}", input)
+
+        val ast = messageParser.parse(input)
+
+        val tags = getTags(ast)
+        val source = getSource(ast)
+        val command = getCommand(ast)
+        val parameters = getParameters(ast)
+        val message = Message(tags, source, command, parameters)
+
+        logger.debug("message: {}", message)
+        return message
+    }
+
     private fun toStringTags(tags: Map<String, String?>?): String? {
         val tagStringList = tags?.map { tag -> "${tag.key}${tag.value.let { value -> "=$value" }}" }
         val tagsString = tagStringList?.joinToString(";")
@@ -79,21 +94,6 @@ class SerDesImpl(private val messageParser: Parser): SerDes<Message> {
         else {
             null
         }
-    }
-
-    override fun deserialize(input: String): Message {
-        logger.debug("input: {}", input)
-
-        val ast = messageParser.parse(input)
-
-        val tags = getTags(ast)
-        val source = getSource(ast)
-        val command = getCommand(ast)
-        val parameters = getParameters(ast)
-        val message = Message(tags, source, command, parameters)
-
-        logger.debug("message: {}", message)
-        return message
     }
 
     private fun getTags(ast: Ast): Map<String, String?>? {

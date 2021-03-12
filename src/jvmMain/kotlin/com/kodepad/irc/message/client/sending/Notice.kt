@@ -3,7 +3,7 @@ package com.kodepad.irc.message.client.sending
 import com.kodepad.irc.exception.message.InvalidServerMessageException
 import com.kodepad.irc.message.Message
 
-data class Notice(
+class Notice(
     val message: Message,
 ) {
     val targets: List<String>
@@ -18,5 +18,9 @@ data class Notice(
         else {
             throw InvalidServerMessageException("2 parameters expected")
         }
+    }
+
+    override fun toString(): String {
+        return "Notice(message=$message, targets=$targets, text='$text')"
     }
 }

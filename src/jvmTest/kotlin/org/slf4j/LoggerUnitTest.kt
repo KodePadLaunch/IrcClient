@@ -9,6 +9,7 @@ class LoggerUnitTest {
     fun traceLog() {
         logger.trace("this is a trace log!")
     }
+
     @Test
     fun debugLog() {
         logger.debug("this is a debug log")

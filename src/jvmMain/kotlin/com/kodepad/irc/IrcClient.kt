@@ -36,30 +36,31 @@ class IrcClient : Client {
         logger.debug("joinNetwork called!")
 
         val networkState = NetworkState(
-                user
+            user
         )
 
         val connection = ConnectionImpl(
-                JavaNioSocketFactoryImpl.create(
-                        hostname,
-                        port,
-                        CodecFactory.getCodec(encoding).encode(DELIMITER)
-                ),
-                CodecFactory.getCodec(encoding),
-                SerDesFactory.getSerdes(Message::class),
+            JavaNioSocketFactoryImpl.create(
+                hostname,
+                port,
+                CodecFactory.getCodec(encoding).encode(DELIMITER)
+            ),
+            CodecFactory.getCodec(encoding),
+            SerDesFactory.getSerdes(Message::class),
         )
 
-        val commandHandlerFactory = CommandHandlerFactory(connection, networkState, noticeEventListener, privMsgEventListener)
+        val commandHandlerFactory =
+            CommandHandlerFactory(connection, networkState, noticeEventListener, privMsgEventListener)
 
         val messageHandler = MessageHandler(
-                rawMessageEventListener,
-                commandHandlerFactory
+            commandHandlerFactory,
+            rawMessageEventListener,
         )
 
         return NetworkImpl(
-                networkState,
-                connection,
-                messageHandler
+            networkState,
+            connection,
+            messageHandler
         )
     }
 }

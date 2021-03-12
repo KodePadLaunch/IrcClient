@@ -6,8 +6,8 @@ import com.kodepad.irc.message.Message
 import org.slf4j.LoggerFactory
 
 class MessageHandler(
-    private val rawMessageEventListener: EventListener<Message>?,
-    private val commandHandlerFactory: CommandHandlerFactory
+    private val commandHandlerFactory: CommandHandlerFactory,
+    private val rawMessageEventListener: EventListener<Message>? = null,
 ) : Handler {
     companion object {
         private val logger = LoggerFactory.getLogger(MessageHandler::class.java)

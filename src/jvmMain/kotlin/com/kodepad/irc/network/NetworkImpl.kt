@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.yield
 import org.slf4j.LoggerFactory
 
 // todo: Test the shutdown logic
@@ -16,13 +17,13 @@ class NetworkImpl(
     private val networkState: NetworkState,
     private val connection: Connection,
     private val messageHandler: Handler,
+    private val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext)
 ): Network {
     companion object {
         private val logger = LoggerFactory.getLogger(NetworkImpl::class.java)
     }
 
     // todo: Check if the EmptyCorutineContext usage is correct here
-    private val coroutineScope = CoroutineScope(EmptyCoroutineContext)
 
     init {
         runBlocking {
@@ -33,6 +34,7 @@ class NetworkImpl(
         coroutineScope.launch {
             logger.debug("connection read coroutine called!")
             while (true) {
+                yield()
                 val message = connection.read()
                 logger.debug("message: $message")
                 messageHandler.onMessage(message)

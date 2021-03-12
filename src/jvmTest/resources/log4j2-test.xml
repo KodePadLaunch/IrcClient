@@ -61,7 +61,7 @@
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="FullInfo" level="info" />
             <AppenderRef ref="FullDebug" level="debug" />
-            <AppenderRef ref="TestCode" level="trace" />
+            <AppenderRef ref="TestFlow" level="trace" />
         </Root>
     </Loggers>
 </Configuration>

@@ -1,5 +1,6 @@
 package com.kodepad.irc
 
+import com.kodepad.irc.TestConstants.INTEGRATION_TEST_TIMEOUT_IN_MILIS
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.message.Message
@@ -9,7 +10,12 @@ import com.kodepad.irc.vo.User
 import kotlinx.coroutines.runBlocking
 import org.slf4j.LoggerFactory
 import java.lang.Thread.sleep
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.job
 
 // try this with following servers freenode, unreal, ircu
 class IrcClientIntegrationTest {
@@ -17,52 +23,73 @@ class IrcClientIntegrationTest {
         private val logger = LoggerFactory.getLogger(IrcClientIntegrationTest::class.java)
     }
 
-    @Test
-    fun `register and send message to channel`() {
+    @Test(timeout = INTEGRATION_TEST_TIMEOUT_IN_MILIS)
+    fun `freenode join channel and send message test`() {
         logger.info("starting test")
+        val coroutineScope = CoroutineScope(EmptyCoroutineContext)
 
-        val rawMessageEventListener = object : EventListener<Message> {
+        val testMessageString = "hello, world from IrcClient!"
+
+        var testFlag = false
+        val rawMessageEventListener1 = object : EventListener<Message> {
             override fun onEvent(event: Message) {
                 logger.debug(TEST_FLOW, "rawMessage: $event")
             }
         }
 
-        val noticeEventListener = object : EventListener<Notice> {
+        val noticeEventListener1 = object : EventListener<Notice> {
             override fun onEvent(event: Notice) {
                 logger.debug(TEST_FLOW, "notice: ${event.text}")
             }
         }
 
-        val privMsgEventListener = object : EventListener<PrivMsg> {
+        val privMsgEventListener1 = object : EventListener<PrivMsg> {
             override fun onEvent(event: PrivMsg) {
                 logger.debug(TEST_FLOW, "privmsg: ${event.text}")
+                if(testMessageString == event.text) {
+                    testFlag = true
+                    coroutineScope.cancel()
+                }
             }
-
         }
 
         val ircClient: Client = IrcClient()
 
-        val network = ircClient.joinNetwork(
+        val network1 = ircClient.joinNetwork(
             hostname = "chat.freenode.net",
             port = Integer.parseInt("6665"),
             user = User(
-                nickname = "dummykodepadnick",
-                username = "ircclienttestuser",
+                nickname = "testnickname1",
+                username = "testusername1",
                 realname = "IRC Client Test Host"
             ),
-            noticeEventListener = noticeEventListener,
-            privMsgEventListener = privMsgEventListener,
-            rawMessageEventListener = rawMessageEventListener
+            noticeEventListener = noticeEventListener1,
+            privMsgEventListener = privMsgEventListener1,
+            rawMessageEventListener = rawMessageEventListener1
+        )
+
+        val network2 = ircClient.joinNetwork(
+            hostname = "chat.freenode.net",
+            port = Integer.parseInt("6665"),
+            user = User(
+                nickname = "testnickname2",
+                username = "testusername2",
+                realname = "IRC Client Test Host"
+            ),
         )
 
         runBlocking {
-            network.joinChannel("#ircclienttest")
-            network.sendMessage("#ircclienttest", "hello, world from IrcClient!")
+            network1.joinChannel("#ircclienttest")
+            network2.joinChannel("#ircclienttest")
+            network2.sendMessage("#ircclienttest", testMessageString)
+
+            coroutineScope.coroutineContext.job.join()
         }
 
-        sleep(30_000)
+        assert(testFlag)
 
-        network.close()
+        network2.close()
+        network1.close()
     }
 
     @Test

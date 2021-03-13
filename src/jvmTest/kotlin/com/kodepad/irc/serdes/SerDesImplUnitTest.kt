@@ -69,4 +69,17 @@ class SerDesImplUnitTest {
 
         assertEquals(expectedMessageLine, messageLine)
     }
+
+    @Test()
+    fun `serialization and deserialization inverse relation test`() {
+        val input = ":tepper.freenode.net 005 dummykodepadnick CPRIVMSG CNOTICE SAFELIST ELIST=CTU MONITOR=100 :are supported by this server\r\n"
+
+        val serDes = SerDesFactory.getSerdes(Message::class)
+
+        val output = serDes.serialize(serDes.deserialize(input))
+        logger.debug(TEST_FLOW, "input : $input")
+        logger.debug(TEST_FLOW, "output: $output")
+
+        assertEquals(input, output)
+    }
 }

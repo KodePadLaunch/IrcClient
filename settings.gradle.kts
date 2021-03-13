@@ -1,3 +1,1 @@
-
-rootProject.name = "IrcClient"
-
+rootProject.name = "irc-client-core"

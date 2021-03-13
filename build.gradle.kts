@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.4.21"
 }
 group = "com.kodepad.irc"
-version = "1.0.0-SNAPSHOT"
+version = "0.1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()

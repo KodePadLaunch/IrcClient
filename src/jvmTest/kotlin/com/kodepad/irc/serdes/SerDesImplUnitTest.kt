@@ -14,6 +14,7 @@ class SerDesImplUnitTest {
         private val logger: Logger = LoggerFactory.getLogger(SerDesImplUnitTest::class.java)
     }
 
+    // todo: Separate performance test from functionality test and avoid logs in performance test
     @Test(timeout = DESERIALIZATION_TIMEOUT_IN_MILIS)
     fun `message deserialization test`() {
         val input = ":tepper.freenode.net 005 dummykodepadnick CPRIVMSG CNOTICE SAFELIST ELIST=CTU MONITOR=100 :are supported by this server\r\n"

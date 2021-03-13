@@ -6,6 +6,7 @@ import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.Token
 import com.kodepad.irc.parser.ast.Ast
 import java.util.*
+import kotlin.collections.ArrayDeque
 import kotlin.collections.ArrayList
 import org.slf4j.LoggerFactory
 
@@ -132,17 +133,17 @@ class SerDesImpl(private val messageParser: Parser): SerDes<Message> {
     private fun findAllTokens(ast: Ast, token: Token): List<Ast> {
         val matchedAsts = ArrayList<Ast>()
 
-        val stack: Stack<Ast> = Stack()
-        stack.push(ast)
-        while (!stack.isEmpty()) {
-            val topAst = stack.pop()
+        val deque: ArrayDeque<Ast> = ArrayDeque()
+        deque.addLast(ast)
+        while (!deque.isEmpty()) {
+            val topAst = deque.removeFirst()
             // Assuming same tags are not nested
             if(topAst.token == token) {
                 matchedAsts.add(topAst)
             }
             else {
                 for(subAst in topAst.subProductions) {
-                    stack.push(subAst)
+                    deque.addLast(subAst)
                 }
             }
         }

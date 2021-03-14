@@ -73,7 +73,7 @@ class JavaNioSocketImpl(
         return byteCount
     }
 
-    override fun close() {
+    override suspend fun close() {
         asynchronousSocketChannel.close()
     }
 

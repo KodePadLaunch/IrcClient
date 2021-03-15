@@ -5,10 +5,10 @@ import com.kodepad.irc.command.NickCommand
 import com.kodepad.irc.command.PrivMsgCommand
 import com.kodepad.irc.command.UserCommand
 import com.kodepad.irc.event.EventListener
-import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.event.NoticeEvent
 import com.kodepad.irc.event.PrivMsgEvent
 import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test

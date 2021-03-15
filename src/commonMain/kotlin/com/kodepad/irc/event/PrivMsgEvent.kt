@@ -1,7 +1,7 @@
 package com.kodepad.irc.event
 
-import com.kodepad.irc.exception.message.InvalidServerMessageException
 import com.kodepad.irc.Message
+import com.kodepad.irc.exception.message.InvalidServerMessageException
 
 data class PrivMsgEvent(
     val message: Message,

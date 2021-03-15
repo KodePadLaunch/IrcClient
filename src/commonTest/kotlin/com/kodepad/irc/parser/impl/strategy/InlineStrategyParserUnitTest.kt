@@ -1,13 +1,13 @@
 package com.kodepad.irc.parser.impl.strategy
 
-import com.kodepad.irc.parser.StringConstants.DIGIT
 import com.kodepad.irc.exception.parser.ParsingException
-import com.kodepad.irc.parser.impl.HostParser
-import com.kodepad.irc.parser.impl.NicknameParser
-import com.kodepad.irc.parser.impl.UserParser
 import com.kodepad.irc.logging.Logger
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.parser.ParserFactory
+import com.kodepad.irc.parser.StringConstants.DIGIT
+import com.kodepad.irc.parser.impl.HostParser
+import com.kodepad.irc.parser.impl.NicknameParser
+import com.kodepad.irc.parser.impl.UserParser
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

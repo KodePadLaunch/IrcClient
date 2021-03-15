@@ -1,9 +1,9 @@
 package com.kodepad.irc.event
 
+import com.kodepad.irc.Message
 import com.kodepad.irc.exception.IrcClientTestException
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.logging.Markers.TEST_FLOW
-import com.kodepad.irc.Message
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

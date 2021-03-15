@@ -1,9 +1,9 @@
 package com.kodepad.irc.parser.impl.matcher.regex
 
-import com.kodepad.irc.parser.StringConstants.USER
 import com.kodepad.irc.logging.Logger
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.parser.ParserFactory
+import com.kodepad.irc.parser.StringConstants.USER
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

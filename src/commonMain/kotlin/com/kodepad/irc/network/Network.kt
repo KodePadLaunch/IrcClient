@@ -1,13 +1,13 @@
 package com.kodepad.irc.network
 
-import com.kodepad.irc.event.Event
-import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.Message
 import com.kodepad.irc.NetworkState
 import com.kodepad.irc.command.JoinCommand
 import com.kodepad.irc.command.NickCommand
 import com.kodepad.irc.command.PrivMsgCommand
 import com.kodepad.irc.command.UserCommand
+import com.kodepad.irc.event.Event
+import com.kodepad.irc.event.EventListener
 import kotlin.reflect.KClass
 
 interface Network {

@@ -1,24 +1,24 @@
 package com.kodepad.irc.handler
 
+import com.kodepad.irc.Message
+import com.kodepad.irc.NetworkState
+import com.kodepad.irc.command.NickCommand
+import com.kodepad.irc.command.UserCommand
 import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.event.EventDispatcherImpl
 import com.kodepad.irc.event.EventListener
-import com.kodepad.irc.logging.Markers.TEST_FLOW
-import com.kodepad.irc.Message
-import com.kodepad.irc.command.NickCommand
-import com.kodepad.irc.command.UserCommand
 import com.kodepad.irc.event.NoticeEvent
+import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.network.NetworkImpl
-import com.kodepad.irc.NetworkState
+import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.job
-import com.kodepad.irc.logging.LoggerFactory
-import com.kodepad.kotlinx.coroutines.runBlockingTest
-import kotlin.test.assertTrue
 
 class NoticeEventHandlerUnitTest {
     companion object {

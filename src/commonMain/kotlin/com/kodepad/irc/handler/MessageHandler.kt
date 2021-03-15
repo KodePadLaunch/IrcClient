@@ -1,9 +1,9 @@
 package com.kodepad.irc.handler
 
+import com.kodepad.irc.Message
 import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.exception.handler.UnknownCommandException
 import com.kodepad.irc.logging.LoggerFactory
-import com.kodepad.irc.Message
 
 class MessageHandler(
     private val commandHandlerFactory: CommandHandlerFactory,

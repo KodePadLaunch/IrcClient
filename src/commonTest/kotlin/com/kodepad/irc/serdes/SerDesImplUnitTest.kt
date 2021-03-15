@@ -1,11 +1,11 @@
 package com.kodepad.irc.serdes
 
-import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.Message
-import kotlin.test.Test
-import kotlin.test.assertEquals
 import com.kodepad.irc.logging.Logger
 import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.logging.Markers.TEST_FLOW
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class SerDesImplUnitTest {
     companion object {

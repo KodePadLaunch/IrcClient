@@ -1,9 +1,9 @@
 package com.kodepad.irc.handler
 
-import com.kodepad.irc.event.EventDispatcher
-import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.Message
+import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.event.NoticeEvent
+import com.kodepad.irc.logging.LoggerFactory
 
 class NoticeHandler(private val eventDispatcher: EventDispatcher) : Handler {
     companion object {

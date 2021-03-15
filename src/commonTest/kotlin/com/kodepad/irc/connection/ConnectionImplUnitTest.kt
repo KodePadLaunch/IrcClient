@@ -1,14 +1,14 @@
 package com.kodepad.irc.connection
 
+import com.kodepad.irc.Message
 import com.kodepad.irc.codec.CodecFactory
 import com.kodepad.irc.codec.Encoding
 import com.kodepad.irc.exception.IrcClientTestException
+import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.logging.Markers.TEST_FLOW
-import com.kodepad.irc.Message
 import com.kodepad.irc.serdes.SerDesFactory
 import com.kodepad.irc.socket.Socket
 import com.kodepad.irc.socket.SocketFactory
-import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

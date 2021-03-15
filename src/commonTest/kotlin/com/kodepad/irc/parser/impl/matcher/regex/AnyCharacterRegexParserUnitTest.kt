@@ -1,11 +1,11 @@
 package com.kodepad.irc.parser.impl.matcher.regex
 
-import com.kodepad.irc.parser.StringConstants.ANY_CHARACTER
-import com.kodepad.irc.parser.Ast
 import com.kodepad.irc.exception.parser.ParsingException
 import com.kodepad.irc.logging.Logger
 import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.parser.Ast
 import com.kodepad.irc.parser.ParserFactory
+import com.kodepad.irc.parser.StringConstants.ANY_CHARACTER
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

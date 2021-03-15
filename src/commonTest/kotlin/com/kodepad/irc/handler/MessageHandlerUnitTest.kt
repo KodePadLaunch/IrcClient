@@ -1,7 +1,7 @@
 package com.kodepad.irc.handler
 
-import com.kodepad.irc.TestConstants.HANDLER_EXECUTION_TIMEOUT_IN_MILLIS
 import com.kodepad.irc.connection.Connection
+import com.kodepad.irc.event.EventDispatcherImpl
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.message.Message
@@ -74,17 +74,20 @@ class MessageHandlerUnitTest {
             }
         }
 
-        val commandHandlerFactory = CommandHandlerFactory(mockConnection, networkState, null, null)
+        val eventDispatcher = EventDispatcherImpl()
+
+        val commandHandlerFactory = CommandHandlerFactory(mockConnection, networkState, eventDispatcher)
         val messageHandler = MessageHandler(
             commandHandlerFactory,
-            rawMessageEventListener,
+            eventDispatcher
         )
 
         val network = NetworkImpl(
             networkState,
             mockConnection,
             messageHandler,
-            coroutineScope
+            eventDispatcher,
+            coroutineScope,
         )
 
         runBlockingTest {

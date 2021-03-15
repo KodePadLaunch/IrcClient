@@ -1,6 +1,9 @@
 package com.kodepad.irc.network
 
 import com.kodepad.irc.connection.Connection
+import com.kodepad.irc.event.Event
+import com.kodepad.irc.event.EventDispatcher
+import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.handler.Handler
 import com.kodepad.irc.message.Message
 import kotlin.coroutines.EmptyCoroutineContext
@@ -9,6 +12,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import com.kodepad.irc.logging.LoggerFactory
+import kotlin.reflect.KClass
 
 // todo: Test the shutdown logic
 // todo: This class is doing too much break it down
@@ -16,10 +20,15 @@ class NetworkImpl(
     private val networkState: NetworkState,
     private val connection: Connection,
     private val messageHandler: Handler,
+    private val eventDispatcher: EventDispatcher,
     private val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext)
 ): Network {
     companion object {
         private val logger = LoggerFactory.getLogger(NetworkImpl::class)
+    }
+
+    override fun <T : Event> addEventListener(kClass: KClass<T>, eventListener: EventListener<T>) {
+        eventDispatcher.addListener(kClass, eventListener)
     }
 
     override suspend fun connectAndRegister() {
@@ -63,6 +72,10 @@ class NetworkImpl(
         )
 
         connection.write(privmsg)
+    }
+
+    override suspend fun sendRawMessage(message: Message) {
+        connection.write(message)
     }
 
     override suspend fun close() {

@@ -8,7 +8,6 @@ import com.kodepad.irc.message.Message
 import com.kodepad.irc.serdes.SerDesFactory
 import com.kodepad.irc.socket.Socket
 import com.kodepad.irc.socket.SocketFactory
-import com.kodepad.irc.logging.Logger
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.test.Test

@@ -1,6 +1,5 @@
 package com.kodepad.irc
 
-import com.kodepad.irc.TestConstants.INTEGRATION_TEST_TIMEOUT_IN_MILIS
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.message.Message
@@ -10,13 +9,13 @@ import com.kodepad.irc.vo.User
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.job
 
+// todo: These tests are flaky, and not scalable to multiple developers
 // try this with following servers freenode, unreal, ircu
 class IrcClientIntegrationTest {
     companion object {
@@ -53,9 +52,7 @@ class IrcClientIntegrationTest {
             }
         }
 
-        val ircClient: Client = IrcClient()
-
-        val network1 = ircClient.joinNetwork(
+        val network1 = IrcNetwork(
             hostname = "chat.freenode.net",
             port = "6665".toInt(),
             user = User(
@@ -63,12 +60,13 @@ class IrcClientIntegrationTest {
                 username = "testusername1",
                 realname = "IRC Client Test Host"
             ),
-            noticeEventListener = noticeEventListener1,
-            privMsgEventListener = privMsgEventListener1,
-            rawMessageEventListener = rawMessageEventListener1
         )
 
-        val network2 = ircClient.joinNetwork(
+        network1.addEventListener(Notice::class, noticeEventListener1)
+        network1.addEventListener(PrivMsg::class, privMsgEventListener1)
+        network1.addEventListener(Message::class, rawMessageEventListener1)
+
+        val network2 = IrcNetwork(
             hostname = "chat.freenode.net",
             port = "6665".toInt(),
             user = User(
@@ -120,9 +118,7 @@ class IrcClientIntegrationTest {
 
         }
 
-        val ircClient: Client = IrcClient()
-
-        val network = ircClient.joinNetwork(
+        val network = IrcNetwork(
             hostname = "chat.freenode.net",
             port = "6665".toInt(),
             user = User(
@@ -130,10 +126,10 @@ class IrcClientIntegrationTest {
                 username = "ircclienttestuser",
                 realname = "IRC Client Test Host"
             ),
-            noticeEventListener = noticeEventListener,
-            privMsgEventListener = privMsgEventListener,
-            rawMessageEventListener = rawMessageEventListener
         )
+        network.addEventListener(Notice::class, noticeEventListener)
+        network.addEventListener(PrivMsg::class, privMsgEventListener)
+        network.addEventListener(Message::class, rawMessageEventListener)
 
         runBlockingTest {
             network.connectAndRegister()

@@ -1,11 +1,12 @@
 package com.kodepad.irc.message.client.sending
 
+import com.kodepad.irc.event.Event
 import com.kodepad.irc.exception.message.InvalidServerMessageException
 import com.kodepad.irc.message.Message
 
 data class PrivMsg(
     val message: Message,
-) {
+): Event {
     val targets: List<String>
     val text: String
 

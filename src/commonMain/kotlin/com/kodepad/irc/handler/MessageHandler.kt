@@ -1,5 +1,6 @@
 package com.kodepad.irc.handler
 
+import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.exception.handler.UnknownCommandException
 import com.kodepad.irc.message.Message
@@ -7,7 +8,7 @@ import com.kodepad.irc.logging.LoggerFactory
 
 class MessageHandler(
     private val commandHandlerFactory: CommandHandlerFactory,
-    private val rawMessageEventListener: EventListener<Message>? = null,
+    private val eventDispatcher: EventDispatcher,
 ) : Handler {
     companion object {
         private val logger = LoggerFactory.getLogger(MessageHandler::class)
@@ -16,7 +17,7 @@ class MessageHandler(
     override suspend fun onMessage(message: Message) {
         logger.debug("message: {}", message)
 
-        rawMessageEventListener?.onEvent(message)
+        eventDispatcher.dispatch(Message::class, message)
 
         try {
             val commandHandler = commandHandlerFactory.getHandler(Command.valueOf("COMMAND_" + message.command))

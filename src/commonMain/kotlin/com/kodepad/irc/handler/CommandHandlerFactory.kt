@@ -1,6 +1,7 @@
 package com.kodepad.irc.handler
 
 import com.kodepad.irc.connection.Connection
+import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.message.client.sending.Notice
 import com.kodepad.irc.message.client.sending.PrivMsg
@@ -9,15 +10,14 @@ import com.kodepad.irc.network.NetworkState
 class CommandHandlerFactory(
     private val connection: Connection,
     private val networkState: NetworkState,
-    private val noticeEventListener: EventListener<Notice>?,
-    private val privMsgEventListener: EventListener<PrivMsg>?,
-        ) {
+    private val eventDispatcher: EventDispatcher,
+) {
     fun getHandler(command: Command): Handler {
         return when(command) {
             Command.COMMAND_PING -> PingHandler(connection, networkState)
-            Command.COMMAND_NOTICE -> NoticeHandler(noticeEventListener)
+            Command.COMMAND_NOTICE -> NoticeHandler(eventDispatcher)
             Command.COMMAND_MODE -> ModeHandler()
-            Command.COMMAND_PRIVMSG -> PrivMsgHandler(privMsgEventListener)
+            Command.COMMAND_PRIVMSG -> PrivMsgHandler(eventDispatcher)
             Command.COMMAND_JOIN -> JoinHandler()
             Command.COMMAND_001 -> RplWelcomeHandler()
             Command.COMMAND_002 -> RplYourHostHandler()

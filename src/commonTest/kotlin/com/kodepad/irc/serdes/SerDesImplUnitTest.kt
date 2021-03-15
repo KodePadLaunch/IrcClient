@@ -1,7 +1,5 @@
 package com.kodepad.irc.serdes
 
-import com.kodepad.irc.TestConstants.DESERIALIZATION_TIMEOUT_IN_MILIS
-import com.kodepad.irc.TestConstants.SERIALIZATION_TIMEOUT_IN_MILIS
 import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.message.Message
 import kotlin.test.Test

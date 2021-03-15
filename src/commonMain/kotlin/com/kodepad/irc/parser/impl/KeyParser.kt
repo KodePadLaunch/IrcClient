@@ -1,14 +1,14 @@
 package com.kodepad.irc.parser.impl
 
+import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.parser.Ast
 import com.kodepad.irc.parser.Parser
+import com.kodepad.irc.parser.ParserFactory
 import com.kodepad.irc.parser.StringConstants.ALPHA
 import com.kodepad.irc.parser.StringConstants.DASH
 import com.kodepad.irc.parser.StringConstants.DIGIT
 import com.kodepad.irc.parser.StringConstants.FORWARD_SLASH
 import com.kodepad.irc.parser.Token
-import com.kodepad.irc.parser.Ast
-import com.kodepad.irc.parser.ParserFactory
-import com.kodepad.irc.logging.LoggerFactory
 
 
 class KeyParser(private val parserFactory: ParserFactory) : Parser {

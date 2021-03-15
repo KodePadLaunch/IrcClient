@@ -1,9 +1,9 @@
 package com.kodepad.irc.parser.impl.strategy
 
 import com.kodepad.irc.exception.parser.ParsingException
-import com.kodepad.irc.parser.Parser
-import com.kodepad.irc.parser.Ast
 import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.parser.Ast
+import com.kodepad.irc.parser.Parser
 
 open class MultipleOccurenceStrategyParser(
     private val parser: Parser,

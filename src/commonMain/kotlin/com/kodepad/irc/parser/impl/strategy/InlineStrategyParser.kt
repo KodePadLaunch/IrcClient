@@ -1,8 +1,8 @@
 package com.kodepad.irc.parser.impl.strategy
 
-import com.kodepad.irc.parser.Parser
-import com.kodepad.irc.parser.Ast
 import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.parser.Ast
+import com.kodepad.irc.parser.Parser
 
 class InlineStrategyParser(private vararg val parsers: Parser) : Parser {
     companion object {

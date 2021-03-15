@@ -2,9 +2,9 @@ package com.kodepad.irc.handler
 
 import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.exception.handler.TargetServerMissingException
+import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.message.Message
 import com.kodepad.irc.network.NetworkState
-import com.kodepad.irc.logging.LoggerFactory
 
 class PingHandler(
     private val connection: Connection,

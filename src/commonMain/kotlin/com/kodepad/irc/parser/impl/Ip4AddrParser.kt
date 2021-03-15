@@ -1,11 +1,11 @@
 package com.kodepad.irc.parser.impl
 
+import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.parser.Ast
 import com.kodepad.irc.parser.Parser
+import com.kodepad.irc.parser.ParserFactory
 import com.kodepad.irc.parser.StringConstants.DIGIT
 import com.kodepad.irc.parser.StringConstants.DOT
-import com.kodepad.irc.parser.Ast
-import com.kodepad.irc.parser.ParserFactory
-import com.kodepad.irc.logging.LoggerFactory
 
 
 class Ip4AddrParser(private val parserFactory: ParserFactory): Parser {

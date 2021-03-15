@@ -2,9 +2,6 @@ package com.kodepad.irc.handler
 
 import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.event.EventDispatcher
-import com.kodepad.irc.event.EventListener
-import com.kodepad.irc.message.client.sending.Notice
-import com.kodepad.irc.message.client.sending.PrivMsg
 import com.kodepad.irc.network.NetworkState
 
 class CommandHandlerFactory(

@@ -1,10 +1,10 @@
 package com.kodepad.irc.parser.impl
 
-import com.kodepad.irc.parser.Parser
-import com.kodepad.irc.parser.StringConstants.ALPHA
-import com.kodepad.irc.parser.Ast
-import com.kodepad.irc.parser.ParserFactory
 import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.parser.Ast
+import com.kodepad.irc.parser.Parser
+import com.kodepad.irc.parser.ParserFactory
+import com.kodepad.irc.parser.StringConstants.ALPHA
 
 
 class LetterParser(private val parserFactory: ParserFactory): Parser {

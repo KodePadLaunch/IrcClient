@@ -2,8 +2,8 @@ package com.kodepad.irc.handler
 
 import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.logging.LoggerFactory
-import com.kodepad.irc.message.Message
-import com.kodepad.irc.message.client.sending.Notice
+import com.kodepad.irc.Message
+import com.kodepad.irc.event.NoticeEvent
 
 class NoticeHandler(private val eventDispatcher: EventDispatcher) : Handler {
     companion object {
@@ -14,7 +14,7 @@ class NoticeHandler(private val eventDispatcher: EventDispatcher) : Handler {
         logger.debug("message: {}", message)
 
 
-        val notice = Notice(message)
-        eventDispatcher.dispatch(Notice::class, notice)
+        val notice = NoticeEvent(message)
+        eventDispatcher.dispatch(NoticeEvent::class, notice)
     }
 }

@@ -1,6 +1,6 @@
 package com.kodepad.irc.connection
 
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
 
 interface Connection {
     suspend fun connect()

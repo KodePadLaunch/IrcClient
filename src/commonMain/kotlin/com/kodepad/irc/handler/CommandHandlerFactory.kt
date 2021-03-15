@@ -2,7 +2,7 @@ package com.kodepad.irc.handler
 
 import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.event.EventDispatcher
-import com.kodepad.irc.network.NetworkState
+import com.kodepad.irc.NetworkState
 
 class CommandHandlerFactory(
     private val connection: Connection,

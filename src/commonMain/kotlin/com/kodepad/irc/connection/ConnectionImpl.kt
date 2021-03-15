@@ -1,7 +1,7 @@
 package com.kodepad.irc.connection
 
 import com.kodepad.irc.codec.Codec
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
 import com.kodepad.irc.serdes.SerDes
 import com.kodepad.irc.socket.Socket
 import com.kodepad.irc.logging.LoggerFactory

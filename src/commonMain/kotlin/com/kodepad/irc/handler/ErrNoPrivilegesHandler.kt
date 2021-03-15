@@ -1,6 +1,6 @@
 package com.kodepad.irc.handler
 
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
 import com.kodepad.irc.logging.LoggerFactory
 
 class ErrNoPrivilegesHandler() : Handler {

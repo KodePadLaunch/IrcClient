@@ -1,11 +1,13 @@
 package com.kodepad.irc
 
+import com.kodepad.irc.command.JoinCommand
+import com.kodepad.irc.command.NickCommand
+import com.kodepad.irc.command.PrivMsgCommand
+import com.kodepad.irc.command.UserCommand
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.logging.Markers.TEST_FLOW
-import com.kodepad.irc.message.Message
-import com.kodepad.irc.message.client.sending.Notice
-import com.kodepad.irc.message.client.sending.PrivMsg
-import com.kodepad.irc.vo.User
+import com.kodepad.irc.event.NoticeEvent
+import com.kodepad.irc.event.PrivMsgEvent
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.coroutines.EmptyCoroutineContext
@@ -36,14 +38,14 @@ class IrcClientIntegrationTest {
             }
         }
 
-        val noticeEventListener1 = object : EventListener<Notice> {
-            override fun onEvent(event: Notice) {
+        val noticeEventListener1 = object : EventListener<NoticeEvent> {
+            override fun onEvent(event: NoticeEvent) {
                 logger.debug(TEST_FLOW, "notice: ${event.text}")
             }
         }
 
-        val privMsgEventListener1 = object : EventListener<PrivMsg> {
-            override fun onEvent(event: PrivMsg) {
+        val privMsgEventListener1 = object : EventListener<PrivMsgEvent> {
+            override fun onEvent(event: PrivMsgEvent) {
                 logger.debug(TEST_FLOW, "privmsg: ${event.text}")
                 if(testMessageString == event.text) {
                     testFlag = true
@@ -55,34 +57,54 @@ class IrcClientIntegrationTest {
         val network1 = IrcNetwork(
             hostname = "chat.freenode.net",
             port = "6665".toInt(),
-            user = User(
-                nickname = "testnickname1",
-                username = "testusername1",
-                realname = "IRC Client Test Host"
-            ),
         )
 
-        network1.addEventListener(Notice::class, noticeEventListener1)
-        network1.addEventListener(PrivMsg::class, privMsgEventListener1)
+        network1.addEventListener(NoticeEvent::class, noticeEventListener1)
+        network1.addEventListener(PrivMsgEvent::class, privMsgEventListener1)
         network1.addEventListener(Message::class, rawMessageEventListener1)
 
         val network2 = IrcNetwork(
             hostname = "chat.freenode.net",
             port = "6665".toInt(),
-            user = User(
-                nickname = "testnickname2",
-                username = "testusername2",
-                realname = "IRC Client Test Host"
-            ),
+        )
+
+        val nickCommand1 = NickCommand(
+            "testnickname1"
+        )
+        val userCommand1 = UserCommand(
+            "testusername1",
+            "IRC Client Test Host"
+        )
+
+        val nickCommand2 = NickCommand(
+            "testnickname2",
+        )
+        val userCommand2 = UserCommand(
+            "testusername2",
+            "IRC Client Test Host"
         )
 
         runBlockingTest {
-            network1.connectAndRegister()
-            network2.connectAndRegister()
 
-            network1.joinChannel("#ircclienttest")
-            network2.joinChannel("#ircclienttest")
-            network2.sendMessage("#ircclienttest", testMessageString)
+            network1.connectAndRegister(nickCommand1, userCommand1)
+            network2.connectAndRegister(nickCommand2, userCommand2)
+
+            network1.joinChannel(
+                JoinCommand(
+                    listOf("#ircclienttest")
+                )
+            )
+            network2.joinChannel(
+                JoinCommand(
+                    listOf("#ircclienttest")
+                )
+            )
+            network2.sendPrivMsg(
+                PrivMsgCommand(
+                    listOf("#ircclienttest"),
+                    testMessageString
+                )
+            )
 
             coroutineScope.coroutineContext.job.join()
 
@@ -105,14 +127,14 @@ class IrcClientIntegrationTest {
             }
         }
 
-        val noticeEventListener = object : EventListener<Notice> {
-            override fun onEvent(event: Notice) {
+        val noticeEventListener = object : EventListener<NoticeEvent> {
+            override fun onEvent(event: NoticeEvent) {
                 logger.debug("notice: ${event.text}")
             }
         }
 
-        val privMsgEventListener = object : EventListener<PrivMsg> {
-            override fun onEvent(event: PrivMsg) {
+        val privMsgEventListener = object : EventListener<PrivMsgEvent> {
+            override fun onEvent(event: PrivMsgEvent) {
                 logger.debug("privmsg: ${event.text}")
             }
 
@@ -121,21 +143,33 @@ class IrcClientIntegrationTest {
         val network = IrcNetwork(
             hostname = "chat.freenode.net",
             port = "6665".toInt(),
-            user = User(
-                nickname = "dummykodepadnick",
-                username = "ircclienttestuser",
-                realname = "IRC Client Test Host"
-            ),
         )
-        network.addEventListener(Notice::class, noticeEventListener)
-        network.addEventListener(PrivMsg::class, privMsgEventListener)
+        network.addEventListener(NoticeEvent::class, noticeEventListener)
+        network.addEventListener(PrivMsgEvent::class, privMsgEventListener)
         network.addEventListener(Message::class, rawMessageEventListener)
 
-        runBlockingTest {
-            network.connectAndRegister()
+        val nickCommand = NickCommand(
+            nickname = "dummykodepadnick",
+        )
+        val userCommand = UserCommand(
+            "ircclienttestuser",
+            "IRC Client Test Host"
+        )
 
-            network.joinChannel("#ircclienttest")
-            network.sendMessage("#ircclienttest", "hello, world from IrcClient!")
+        runBlockingTest {
+            network.connectAndRegister(nickCommand, userCommand)
+
+            network.joinChannel(
+                JoinCommand(
+                    listOf("#ircclienttest")
+                )
+            )
+            network.sendPrivMsg(
+                PrivMsgCommand(
+                    listOf("#ircclienttest"),
+                "hello, world from IrcClient!"
+                )
+            )
 
             network.close()
         }

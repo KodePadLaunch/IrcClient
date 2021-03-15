@@ -1,4 +1,4 @@
-package com.kodepad.irc.message
+package com.kodepad.irc
 
 import com.kodepad.irc.event.Event
 

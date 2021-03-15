@@ -4,10 +4,11 @@ import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.event.EventDispatcherImpl
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.logging.Markers.TEST_FLOW
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
+import com.kodepad.irc.command.NickCommand
+import com.kodepad.irc.command.UserCommand
 import com.kodepad.irc.network.NetworkImpl
-import com.kodepad.irc.network.NetworkState
-import com.kodepad.irc.vo.User
+import com.kodepad.irc.NetworkState
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -37,13 +38,7 @@ class MessageHandlerUnitTest {
             )
         )
 
-        val networkState = NetworkState(
-            User(
-                "testNickname",
-                "testUsername",
-                "testRealname",
-            ),
-        )
+        val networkState = NetworkState()
 
         val mockConnection = object : Connection {
             override suspend fun connect() {
@@ -90,8 +85,17 @@ class MessageHandlerUnitTest {
             coroutineScope,
         )
 
+        val nickCommand = NickCommand(
+            "testNickname",
+            )
+
+        val userCommand = UserCommand(
+            "testUsername",
+            "testRealname",
+            )
+
         runBlockingTest {
-            network.connectAndRegister()
+            network.connectAndRegister(nickCommand, userCommand)
             coroutineScope.coroutineContext.job.join()
         }
 

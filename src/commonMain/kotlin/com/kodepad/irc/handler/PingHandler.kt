@@ -3,8 +3,10 @@ package com.kodepad.irc.handler
 import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.exception.handler.TargetServerMissingException
 import com.kodepad.irc.logging.LoggerFactory
-import com.kodepad.irc.message.Message
-import com.kodepad.irc.network.NetworkState
+import com.kodepad.irc.Message
+import com.kodepad.irc.NetworkState
+import com.kodepad.irc.command.PongCommand
+import com.kodepad.irc.exception.InvalidStateException
 
 class PingHandler(
     private val connection: Connection,
@@ -16,17 +18,12 @@ class PingHandler(
 
     override suspend fun onMessage(message: Message) {
         logger.debug("message: {}", message)
-        val pongMessage = Message(
-                null,
-                null,
-                "PONG",
-                listOf(
-                        networkState.user.nickname,
-                        message.parameters?.get(0)
-                                ?: throw TargetServerMissingException("PING target server argument can't be null")
-                )
+        val pongCommand = PongCommand(
+            networkState.nickname?: throw InvalidStateException("Nickname is null"),
+            message.parameters?.get(0)
+                ?: throw TargetServerMissingException("PING target server argument can't be null")
         )
 
-        connection.write(pongMessage)
+        connection.write(pongCommand.getMessage())
     }
 }

@@ -4,7 +4,7 @@ import com.kodepad.irc.codec.CodecFactory
 import com.kodepad.irc.codec.Encoding
 import com.kodepad.irc.exception.IrcClientTestException
 import com.kodepad.irc.logging.Markers.TEST_FLOW
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
 import com.kodepad.irc.serdes.SerDesFactory
 import com.kodepad.irc.socket.Socket
 import com.kodepad.irc.socket.SocketFactory

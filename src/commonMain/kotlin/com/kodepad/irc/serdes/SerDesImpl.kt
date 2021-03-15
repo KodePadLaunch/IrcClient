@@ -2,7 +2,7 @@ package com.kodepad.irc.serdes
 
 import com.kodepad.irc.exception.serdes.TokenNotFoundException
 import com.kodepad.irc.logging.LoggerFactory
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
 import com.kodepad.irc.parser.Ast
 import com.kodepad.irc.parser.Parser
 import com.kodepad.irc.parser.Token

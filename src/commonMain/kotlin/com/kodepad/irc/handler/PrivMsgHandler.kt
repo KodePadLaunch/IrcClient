@@ -2,8 +2,8 @@ package com.kodepad.irc.handler
 
 import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.logging.LoggerFactory
-import com.kodepad.irc.message.Message
-import com.kodepad.irc.message.client.sending.PrivMsg
+import com.kodepad.irc.Message
+import com.kodepad.irc.event.PrivMsgEvent
 
 class PrivMsgHandler(private val eventDispatcher: EventDispatcher) : Handler {
     companion object {
@@ -13,7 +13,7 @@ class PrivMsgHandler(private val eventDispatcher: EventDispatcher) : Handler {
     override suspend fun onMessage(message: Message) {
         logger.debug("message: {}", message)
 
-        val privMsg = PrivMsg(message)
-        eventDispatcher.dispatch(PrivMsg::class, privMsg)
+        val privMsg = PrivMsgEvent(message)
+        eventDispatcher.dispatch(PrivMsgEvent::class, privMsg)
     }
 }

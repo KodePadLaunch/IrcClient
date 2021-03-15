@@ -1,10 +1,9 @@
-package com.kodepad.irc.message.client.sending
+package com.kodepad.irc.event
 
-import com.kodepad.irc.event.Event
 import com.kodepad.irc.exception.message.InvalidServerMessageException
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
 
-data class PrivMsg(
+class NoticeEvent(
     val message: Message,
 ): Event {
     val targets: List<String>
@@ -19,5 +18,9 @@ data class PrivMsg(
         else {
             throw InvalidServerMessageException("2 parameters expected")
         }
+    }
+
+    override fun toString(): String {
+        return "Notice(message=$message, targets=$targets, text='$text')"
     }
 }

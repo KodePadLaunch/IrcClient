@@ -3,8 +3,7 @@ package com.kodepad.irc.event
 import com.kodepad.irc.exception.IrcClientTestException
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.logging.Markers.TEST_FLOW
-import com.kodepad.irc.message.Message
-import com.kodepad.irc.message.client.sending.Notice
+import com.kodepad.irc.Message
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -37,9 +36,9 @@ class EventDispatcherImplUnitTest {
             }
         )
         eventDispatcher.addListener(
-            Notice::class,
-            object : EventListener<Notice> {
-                override fun onEvent(event: Notice) {
+            NoticeEvent::class,
+            object : EventListener<NoticeEvent> {
+                override fun onEvent(event: NoticeEvent) {
                     logger.debug(TEST_FLOW, "Notice Event Listener called!")
                     logger.debug(TEST_FLOW, "event: $event")
                     throw IrcClientTestException("Notice Event Listener should not be called")
@@ -52,7 +51,7 @@ class EventDispatcherImplUnitTest {
 
     @Test
     fun `test and trigger notice listener`() {
-        val notice = Notice(
+        val notice = NoticeEvent(
             Message(
                 tags = null,
                 source = "freenode-connect!~eir@freenode/utility-bot/frigg",
@@ -76,9 +75,9 @@ class EventDispatcherImplUnitTest {
             }
         )
         eventDispatcher.addListener(
-            Notice::class,
-            object : EventListener<Notice> {
-                override fun onEvent(event: Notice) {
+            NoticeEvent::class,
+            object : EventListener<NoticeEvent> {
+                override fun onEvent(event: NoticeEvent) {
                     logger.debug(TEST_FLOW, "Notice Event Listener called!")
                     logger.debug(TEST_FLOW, "event: $event")
                     assertEquals(notice, event)
@@ -86,6 +85,6 @@ class EventDispatcherImplUnitTest {
             }
         )
 
-        eventDispatcher.dispatch(Notice::class, notice)
+        eventDispatcher.dispatch(NoticeEvent::class, notice)
     }
 }

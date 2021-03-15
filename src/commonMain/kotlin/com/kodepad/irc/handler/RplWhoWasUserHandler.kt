@@ -1,7 +1,7 @@
 package com.kodepad.irc.handler
 
 import com.kodepad.irc.logging.LoggerFactory
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
 
 class RplWhoWasUserHandler() : Handler {
     companion object {

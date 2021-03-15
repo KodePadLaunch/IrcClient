@@ -4,11 +4,12 @@ import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.event.EventDispatcherImpl
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.logging.Markers.TEST_FLOW
-import com.kodepad.irc.message.Message
-import com.kodepad.irc.message.client.sending.PrivMsg
+import com.kodepad.irc.Message
+import com.kodepad.irc.command.NickCommand
+import com.kodepad.irc.command.UserCommand
+import com.kodepad.irc.event.NoticeEvent
 import com.kodepad.irc.network.NetworkImpl
-import com.kodepad.irc.network.NetworkState
-import com.kodepad.irc.vo.User
+import com.kodepad.irc.NetworkState
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -19,32 +20,26 @@ import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.test.assertTrue
 
-class PrivMsgHandlerUnitTest {
+class NoticeEventHandlerUnitTest {
     companion object {
-        private val logger = LoggerFactory.getLogger(PrivMsgHandlerUnitTest::class)
+        private val logger = LoggerFactory.getLogger(NoticeEventHandlerUnitTest::class)
     }
 
     @Test(/* timeout = HANDLER_EXECUTION_TIMEOUT_IN_MILLIS */)
-    fun `privMsg handler invokation success`() {
+    fun `notice handler invokation success`() {
         val coroutineScope = CoroutineScope(EmptyCoroutineContext)
 
-        val privMsg = Message(
+        val noticeMessage = Message(
             tags=null,
-            source="MidKnightKoder!677998db@103.121.152.219",
-            command="PRIVMSG",
-            parameters=listOf(
-                "#ircclienttest",
-                "hello, world"
+            source="freenode-connect!~eir@freenode/utility-bot/frigg",
+            command="NOTICE",
+            parameters= listOf(
+                "dummykodepadnick",
+                "Welcome to freenode. To protect the network all new connections will be scanned for vulnerabilities. This will not harm your computer, and vulnerable hosts will be notified."
             )
         )
 
-        val networkState = NetworkState(
-            User(
-                "testNickname",
-                "testUsername",
-                "testRealname",
-            ),
-        )
+        val networkState = NetworkState()
 
         val mockConnection = object : Connection {
             override suspend fun connect() {
@@ -52,7 +47,7 @@ class PrivMsgHandlerUnitTest {
             }
 
             override suspend fun read(): Message {
-                return privMsg
+                return noticeMessage
             }
 
             override suspend fun write(message: Message) {
@@ -66,11 +61,11 @@ class PrivMsgHandlerUnitTest {
 
         var testFlag = false
 
-        val privMsgEventListener = object : EventListener<PrivMsg> {
-            override fun onEvent(event: PrivMsg) {
+        val noticeEventListener = object : EventListener<NoticeEvent> {
+            override fun onEvent(event: NoticeEvent) {
                 testFlag = true
                 logger.debug(TEST_FLOW, "event: $event")
-                assertEquals(privMsg, event.message)
+                assertEquals(noticeMessage, event.message)
                 coroutineScope.cancel()
             }
         }
@@ -80,11 +75,10 @@ class PrivMsgHandlerUnitTest {
         val commandHandlerFactory = CommandHandlerFactory(
             mockConnection,
             networkState,
-            eventDispatcher
+            eventDispatcher,
         )
         val messageHandler = MessageHandler(commandHandlerFactory, eventDispatcher)
 
-        // todo: This is kind of integration test move it into a separate module
         val network = NetworkImpl(
             networkState,
             mockConnection,
@@ -93,8 +87,17 @@ class PrivMsgHandlerUnitTest {
             coroutineScope,
         )
 
+        val nickCommand = NickCommand(
+            "testNickname",
+            )
+
+        val userCommand = UserCommand(
+            "testUsername",
+            "testRealname",
+            )
+
         runBlockingTest {
-            network.connectAndRegister()
+            network.connectAndRegister(nickCommand, userCommand)
             coroutineScope.coroutineContext.job.join()
         }
 
@@ -105,23 +108,17 @@ class PrivMsgHandlerUnitTest {
     fun `notice handler non invocation on different command`() {
         val coroutineScope = CoroutineScope(EmptyCoroutineContext)
 
-        val noticeMessage = Message(
+        val privmsg = Message(
             tags=null,
-            source="freenode-connect!~eir@freenode/utility-bot/frigg",
-            command="NOTICE",
-            parameters= listOf(
-                "dummykodepadnick",
-                "Welcome to freenode. To protect the network all new connections will be scanned for vulnerabilities. This will not harm your computer, and vulnerable hosts will be notified."
+            source="MidKnightKoder!677998db@103.121.152.219",
+            command="PRIVMSG",
+            parameters=listOf(
+                "#ircclienttest",
+                "hello, world"
             )
         )
 
-        val networkState = NetworkState(
-            User(
-                "testNickname",
-                "testUsername",
-                "testRealname",
-            ),
-        )
+        val networkState = NetworkState()
 
         val mockConnection = object : Connection {
             private var toggle = true
@@ -138,7 +135,7 @@ class PrivMsgHandlerUnitTest {
                     coroutineScope.cancel()
                 }
 
-                return noticeMessage
+                return privmsg
             }
 
             override suspend fun write(message: Message) {
@@ -152,8 +149,8 @@ class PrivMsgHandlerUnitTest {
 
         var testFlag = true
 
-        val privMsgEventListener = object : EventListener<PrivMsg> {
-            override fun onEvent(event: PrivMsg) {
+        val noticeEventListener = object : EventListener<NoticeEvent> {
+            override fun onEvent(event: NoticeEvent) {
                 testFlag = false
                 logger.debug(TEST_FLOW, "event: $event")
             }
@@ -164,7 +161,7 @@ class PrivMsgHandlerUnitTest {
         val commandHandlerFactory = CommandHandlerFactory(
             mockConnection,
             networkState,
-            eventDispatcher,
+            eventDispatcher
         )
         val messageHandler = MessageHandler(commandHandlerFactory, eventDispatcher)
 
@@ -176,8 +173,16 @@ class PrivMsgHandlerUnitTest {
             coroutineScope,
         )
 
+        val nickCommand = NickCommand(
+            "testNickname",
+            )
+        val userCommand = UserCommand(
+            "testUsername",
+            "testRealname",
+            )
+
         runBlockingTest {
-            network.connectAndRegister()
+            network.connectAndRegister(nickCommand, userCommand)
             coroutineScope.coroutineContext.job.join()
         }
 

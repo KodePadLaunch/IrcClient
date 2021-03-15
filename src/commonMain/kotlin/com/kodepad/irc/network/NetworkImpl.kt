@@ -5,13 +5,18 @@ import com.kodepad.irc.event.Event
 import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.handler.Handler
-import com.kodepad.irc.message.Message
+import com.kodepad.irc.Message
+import com.kodepad.irc.NetworkState
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
 import com.kodepad.irc.logging.LoggerFactory
+import com.kodepad.irc.command.JoinCommand
+import com.kodepad.irc.command.NickCommand
+import com.kodepad.irc.command.PrivMsgCommand
+import com.kodepad.irc.command.UserCommand
 import kotlin.reflect.KClass
 
 // todo: Test the shutdown logic
@@ -31,9 +36,9 @@ class NetworkImpl(
         eventDispatcher.addListener(kClass, eventListener)
     }
 
-    override suspend fun connectAndRegister() {
+    override suspend fun connectAndRegister(nickCommand: NickCommand, userCommand: UserCommand) {
         connection.connect()
-        register()
+        register(nickCommand, userCommand)
 
         coroutineScope.launch {
             logger.debug("connection read coroutine called!")
@@ -44,34 +49,22 @@ class NetworkImpl(
                 messageHandler.onMessage(message)
             }
         }
+
+        networkState.connected = true
     }
 
     override fun getNetworkState() = networkState
 
-    override suspend fun joinChannel(name: String) {
+    override suspend fun joinChannel(joinCommand: JoinCommand) {
         logger.debug("joinChannel called!")
 
-        val joinMessage = Message(
-                null,
-                null,
-                "JOIN",
-                listOf(name)
-        )
-
-        connection.write(joinMessage)
+        connection.write(joinCommand.getMessage())
     }
 
-    override suspend fun sendMessage(target: String, message: String) {
+    override suspend fun sendPrivMsg(privMsgCommand: PrivMsgCommand) {
         logger.debug("sendMessage called!")
 
-        val privmsg = Message(
-                null,
-                null,
-                "PRIVMSG",
-                listOf(target, message)
-        )
-
-        connection.write(privmsg)
+        connection.write(privMsgCommand.getMessage())
     }
 
     override suspend fun sendRawMessage(message: Message) {
@@ -85,26 +78,15 @@ class NetworkImpl(
         connection.close()
     }
 
-    private suspend fun register() {
+    private suspend fun register(nickCommand: NickCommand, userCommand: UserCommand) {
         logger.debug("register called!")
 
-        val nickMessage = Message(
-                null,
-                null,
-                "NICK",
-                listOf(networkState.user.nickname)
-        )
-        val userMessage = Message(
-                null,
-                null,
-                "USER",
-                listOf(networkState.user.username, "0", "*", networkState.user.realname)
-        )
+        logger.debug("nickMessage: {}", nickCommand)
+        logger.debug("userMessage: {}", userCommand)
 
-        logger.debug("nickMessage: {}", nickMessage)
-        logger.debug("userMessage: {}", userMessage)
+        connection.write(nickCommand.getMessage())
+        networkState.nickname = nickCommand.nickname
 
-        connection.write(nickMessage)
-        connection.write(userMessage)
+        connection.write(userCommand.getMessage())
     }
 }

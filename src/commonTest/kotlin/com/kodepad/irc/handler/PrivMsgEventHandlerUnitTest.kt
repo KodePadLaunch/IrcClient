@@ -87,6 +87,7 @@ class PrivMsgEventHandlerUnitTest {
             eventDispatcher,
             coroutineScope,
         )
+        network.addEventListener(PrivMsgEvent::class, privMsgEventListener)
 
         val nickCommand = NickCommand(
             "testNickname",
@@ -172,6 +173,7 @@ class PrivMsgEventHandlerUnitTest {
             eventDispatcher,
             coroutineScope,
         )
+        network.addEventListener(PrivMsgEvent::class, privMsgEventListener)
 
         val nickCommand = NickCommand(
             "testNickname",

@@ -85,6 +85,8 @@ class MessageHandlerUnitTest {
             coroutineScope,
         )
 
+        network.addEventListener(Message::class, rawMessageEventListener)
+
         val nickCommand = NickCommand(
             "testNickname",
             )

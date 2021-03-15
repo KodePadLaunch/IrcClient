@@ -86,6 +86,7 @@ class NoticeEventHandlerUnitTest {
             eventDispatcher,
             coroutineScope,
         )
+        network.addEventListener(NoticeEvent::class, noticeEventListener)
 
         val nickCommand = NickCommand(
             "testNickname",
@@ -172,6 +173,7 @@ class NoticeEventHandlerUnitTest {
             eventDispatcher,
             coroutineScope,
         )
+        network.addEventListener(NoticeEvent::class, noticeEventListener)
 
         val nickCommand = NickCommand(
             "testNickname",

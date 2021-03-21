@@ -1,23 +1,23 @@
 package com.kodepad.irc.network
 
+import com.kodepad.irc.Message
+import com.kodepad.irc.NetworkState
+import com.kodepad.irc.command.JoinCommand
+import com.kodepad.irc.command.NickCommand
+import com.kodepad.irc.command.PrivMsgCommand
+import com.kodepad.irc.command.UserCommand
 import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.event.Event
 import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.handler.Handler
-import com.kodepad.irc.Message
-import com.kodepad.irc.NetworkState
+import com.kodepad.irc.logging.LoggerFactory
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import com.kodepad.irc.logging.LoggerFactory
-import com.kodepad.irc.command.JoinCommand
-import com.kodepad.irc.command.NickCommand
-import com.kodepad.irc.command.PrivMsgCommand
-import com.kodepad.irc.command.UserCommand
-import kotlin.reflect.KClass
 
 // todo: Test the shutdown logic
 // todo: This class is doing too much break it down

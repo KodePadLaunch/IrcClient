@@ -5,6 +5,7 @@ import kotlin.reflect.KClass
 class EventDispatcherImpl: EventDispatcher {
     private val eventListenerMap = HashMap<KClass<Event>, ArrayList<EventListener<Event>>>()
 
+    // todo: Check in and out syntax in kotlin
     override fun <T : Event> addListener(kClass: KClass<T>, eventListener: EventListener<T>) {
         // todo: Put this inside try and catch and throw appropriate exception
         val key = kClass as KClass<Event>

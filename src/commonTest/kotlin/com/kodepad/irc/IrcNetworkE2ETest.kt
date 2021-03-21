@@ -11,7 +11,7 @@ import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.test.Test
+import kotlin.test.Ignore
 import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
@@ -19,12 +19,12 @@ import kotlinx.coroutines.job
 
 // todo: These tests are flaky, and not scalable to multiple developers
 // try this with following servers freenode, unreal, ircu
-class IrcClientIntegrationTest {
+class IrcNetworkE2ETest {
     companion object {
-        private val logger = LoggerFactory.getLogger(IrcClientIntegrationTest::class)
+        private val logger = LoggerFactory.getLogger(IrcNetworkE2ETest::class)
     }
 
-    @Test(/* timeout = INTEGRATION_TEST_TIMEOUT_IN_MILIS */)
+    @Ignore(/* timeout = INTEGRATION_TEST_TIMEOUT_IN_MILIS */)
     fun `freenode join channel and send message test`() {
         logger.info("starting test")
         val coroutineScope = CoroutineScope(EmptyCoroutineContext)
@@ -117,7 +117,7 @@ class IrcClientIntegrationTest {
         assertTrue(testFlag)
     }
 
-    @Test
+    @Ignore
     fun `register and send message to channel and test fast close`() {
         logger.info("starting test")
 

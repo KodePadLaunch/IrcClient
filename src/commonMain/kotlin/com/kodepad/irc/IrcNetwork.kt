@@ -1,12 +1,11 @@
 package com.kodepad.irc
 
-import com.kodepad.irc.codec.CodecFactory
 import com.kodepad.irc.codec.Encoding
 import com.kodepad.irc.command.JoinCommand
 import com.kodepad.irc.command.NickCommand
 import com.kodepad.irc.command.PrivMsgCommand
 import com.kodepad.irc.command.UserCommand
-import com.kodepad.irc.connection.ConnectionImpl
+import com.kodepad.irc.connection.ConnectionFactory
 import com.kodepad.irc.event.Event
 import com.kodepad.irc.event.EventDispatcherImpl
 import com.kodepad.irc.event.EventListener
@@ -15,8 +14,6 @@ import com.kodepad.irc.handler.MessageHandler
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.network.Network
 import com.kodepad.irc.network.NetworkImpl
-import com.kodepad.irc.serdes.SerDesFactory
-import com.kodepad.irc.socket.SocketFactory
 import kotlin.reflect.KClass
 
 class IrcNetwork(
@@ -33,16 +30,13 @@ class IrcNetwork(
     private val networkState = NetworkState(
         true
     )
-    private val connection = ConnectionImpl(
-        SocketFactory.create(
-            hostname,
-            port,
-            CodecFactory.getCodec(encoding).encode(DELIMITER)
-        ),
-        CodecFactory.getCodec(encoding),
-        SerDesFactory.getSerdes(Message::class),
-    )
     private val eventDispatcher = EventDispatcherImpl()
+    private val connection = ConnectionFactory.create(
+        hostname,
+        port,
+        encoding,
+        eventDispatcher,
+    )
     private val commandHandlerFactory = CommandHandlerFactory(
         connection,
         networkState,
@@ -52,7 +46,6 @@ class IrcNetwork(
         commandHandlerFactory,
         eventDispatcher
     )
-
     private val networkImpl = NetworkImpl(
         networkState,
         connection,

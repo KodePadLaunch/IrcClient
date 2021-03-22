@@ -7,6 +7,7 @@ import com.kodepad.irc.codec.Encoding
 import com.kodepad.irc.event.EventDispatcher
 import com.kodepad.irc.serdes.SerDesFactory
 import com.kodepad.irc.socket.SocketFactory
+import com.kodepad.irc.state.MutableNetworkState
 
 object ConnectionFactory {
     fun create(
@@ -14,6 +15,7 @@ object ConnectionFactory {
         port: Int,
         encoding: Encoding,
         eventDispatcher: EventDispatcher,
+        mutableNetworkState: MutableNetworkState,
     ): Connection {
         val connectionImpl = ConnectionImpl(
             SocketFactory.create(
@@ -26,7 +28,7 @@ object ConnectionFactory {
         )
 
         return ConnectionExceptionCaptureDecorator(
-            connectionImpl, eventDispatcher
+            connectionImpl, eventDispatcher, mutableNetworkState
         )
     }
 }

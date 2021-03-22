@@ -15,6 +15,7 @@ import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.serdes.SerDesFactory
 import com.kodepad.irc.socket.Socket
+import com.kodepad.irc.state.MutableNetworkState
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -24,7 +25,7 @@ class ConnectionExceptionCaptureDecoratorUnitTest {
         val logger = LoggerFactory.getLogger(ConnectionExceptionCaptureDecoratorUnitTest::class)
     }
 
-    private val mockConnectionImpl = object: Connection {
+    private val mockConnection = object: Connection {
         override suspend fun connect() {
             throw FailedToConnectException("Failed to connect!!")
         }
@@ -54,7 +55,8 @@ class ConnectionExceptionCaptureDecoratorUnitTest {
                 eventCaptureCount++
             }
         })
-        val decoratedConnection = ConnectionExceptionCaptureDecorator(mockConnectionImpl, eventDispatcher)
+        val mutableNetworkState = MutableNetworkState()
+        val decoratedConnection = ConnectionExceptionCaptureDecorator(mockConnection, eventDispatcher, mutableNetworkState)
 
         runBlockingTest {
             ignoreSocketException { decoratedConnection.connect() }

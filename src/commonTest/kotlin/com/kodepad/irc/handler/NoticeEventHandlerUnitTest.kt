@@ -1,7 +1,6 @@
 package com.kodepad.irc.handler
 
 import com.kodepad.irc.Message
-import com.kodepad.irc.NetworkState
 import com.kodepad.irc.command.NickCommand
 import com.kodepad.irc.command.UserCommand
 import com.kodepad.irc.connection.Connection
@@ -11,6 +10,7 @@ import com.kodepad.irc.event.NoticeEvent
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.network.NetworkImpl
+import com.kodepad.irc.state.MutableNetworkState
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
@@ -39,7 +39,7 @@ class NoticeEventHandlerUnitTest {
             )
         )
 
-        val networkState = NetworkState()
+        val mutableNetworkState = MutableNetworkState()
 
         val mockConnection = object : Connection {
             override suspend fun connect() {
@@ -74,19 +74,19 @@ class NoticeEventHandlerUnitTest {
 
         val commandHandlerFactory = CommandHandlerFactory(
             mockConnection,
-            networkState,
+            mutableNetworkState,
             eventDispatcher,
         )
         val messageHandler = MessageHandler(commandHandlerFactory, eventDispatcher)
 
         val network = NetworkImpl(
-            networkState,
+            mutableNetworkState,
             mockConnection,
             messageHandler,
             eventDispatcher,
             coroutineScope,
         )
-        network.addEventListener(NoticeEvent::class, noticeEventListener)
+        network.registerEventListener(NoticeEvent::class, noticeEventListener)
 
         val nickCommand = NickCommand(
             "testNickname",
@@ -119,7 +119,7 @@ class NoticeEventHandlerUnitTest {
             )
         )
 
-        val networkState = NetworkState()
+        val networkState = MutableNetworkState()
 
         val mockConnection = object : Connection {
             private var toggle = true
@@ -173,7 +173,7 @@ class NoticeEventHandlerUnitTest {
             eventDispatcher,
             coroutineScope,
         )
-        network.addEventListener(NoticeEvent::class, noticeEventListener)
+        network.registerEventListener(NoticeEvent::class, noticeEventListener)
 
         val nickCommand = NickCommand(
             "testNickname",

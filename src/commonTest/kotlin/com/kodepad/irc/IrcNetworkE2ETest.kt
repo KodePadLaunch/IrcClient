@@ -59,9 +59,9 @@ class IrcNetworkE2ETest {
             port = "6665".toInt(),
         )
 
-        network1.addEventListener(NoticeEvent::class, noticeEventListener1)
-        network1.addEventListener(PrivMsgEvent::class, privMsgEventListener1)
-        network1.addEventListener(Message::class, rawMessageEventListener1)
+        network1.registerEventListener(NoticeEvent::class, noticeEventListener1)
+        network1.registerEventListener(PrivMsgEvent::class, privMsgEventListener1)
+        network1.registerEventListener(Message::class, rawMessageEventListener1)
 
         val network2 = IrcNetwork(
             hostname = "chat.freenode.net",
@@ -144,9 +144,9 @@ class IrcNetworkE2ETest {
             hostname = "chat.freenode.net",
             port = "6665".toInt(),
         )
-        network.addEventListener(NoticeEvent::class, noticeEventListener)
-        network.addEventListener(PrivMsgEvent::class, privMsgEventListener)
-        network.addEventListener(Message::class, rawMessageEventListener)
+        network.registerEventListener(NoticeEvent::class, noticeEventListener)
+        network.registerEventListener(PrivMsgEvent::class, privMsgEventListener)
+        network.registerEventListener(Message::class, rawMessageEventListener)
 
         val nickCommand = NickCommand(
             nickname = "dummykodepadnick",

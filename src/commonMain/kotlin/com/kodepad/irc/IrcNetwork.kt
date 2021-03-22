@@ -14,6 +14,7 @@ import com.kodepad.irc.handler.MessageHandler
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.network.Network
 import com.kodepad.irc.network.NetworkImpl
+import com.kodepad.irc.state.MutableNetworkState
 import kotlin.reflect.KClass
 
 class IrcNetwork(
@@ -27,19 +28,18 @@ class IrcNetwork(
         const val DELIMITER = "\r\n"
     }
     // todo: Properly form network states
-    private val networkState = NetworkState(
-        true
-    )
+    private val mutableNetworkState = MutableNetworkState()
     private val eventDispatcher = EventDispatcherImpl()
     private val connection = ConnectionFactory.create(
         hostname,
         port,
         encoding,
         eventDispatcher,
+        mutableNetworkState
     )
     private val commandHandlerFactory = CommandHandlerFactory(
         connection,
-        networkState,
+        mutableNetworkState,
         eventDispatcher,
     )
     private val messageHandler = MessageHandler(
@@ -47,15 +47,15 @@ class IrcNetwork(
         eventDispatcher
     )
     private val networkImpl = NetworkImpl(
-        networkState,
+        mutableNetworkState,
         connection,
         messageHandler,
         eventDispatcher
     )
 
-    override fun <T : Event> addEventListener(kClass: KClass<T>, eventListener: EventListener<T>) = networkImpl.addEventListener(kClass, eventListener)
+    override fun <T : Event> registerEventListener(kClass: KClass<T>, eventListener: EventListener<T>) = networkImpl.registerEventListener(kClass, eventListener)
     override suspend fun connectAndRegister(nickCommand: NickCommand, userCommand: UserCommand) = networkImpl.connectAndRegister(nickCommand, userCommand)
-    override fun getNetworkState(): NetworkState = networkImpl.getNetworkState()
+    override fun getNetworkState() = networkImpl.getNetworkState()
     override suspend fun joinChannel(joinCommand: JoinCommand) = networkImpl.joinChannel(joinCommand)
     override suspend fun sendPrivMsg(privMsgCommand: PrivMsgCommand) = networkImpl.sendPrivMsg(privMsgCommand)
     override suspend fun sendRawMessage(message: Message) = networkImpl.sendRawMessage(message)

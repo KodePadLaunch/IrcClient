@@ -1,17 +1,17 @@
 package com.kodepad.irc.handler
 
-import com.kodepad.irc.NetworkState
 import com.kodepad.irc.connection.Connection
 import com.kodepad.irc.event.EventDispatcher
+import com.kodepad.irc.state.MutableNetworkState
 
 class CommandHandlerFactory(
     private val connection: Connection,
-    private val networkState: NetworkState,
+    private val mutableNetworkState: MutableNetworkState,
     private val eventDispatcher: EventDispatcher,
 ) {
     fun getHandler(command: Command): Handler {
         return when(command) {
-            Command.COMMAND_PING -> PingHandler(connection, networkState)
+            Command.COMMAND_PING -> PingHandler(connection, mutableNetworkState)
             Command.COMMAND_NOTICE -> NoticeHandler(eventDispatcher)
             Command.COMMAND_MODE -> ModeHandler()
             Command.COMMAND_PRIVMSG -> PrivMsgHandler(eventDispatcher)

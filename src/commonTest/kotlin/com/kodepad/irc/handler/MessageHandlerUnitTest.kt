@@ -1,7 +1,6 @@
 package com.kodepad.irc.handler
 
 import com.kodepad.irc.Message
-import com.kodepad.irc.NetworkState
 import com.kodepad.irc.command.NickCommand
 import com.kodepad.irc.command.UserCommand
 import com.kodepad.irc.connection.Connection
@@ -10,6 +9,7 @@ import com.kodepad.irc.event.EventListener
 import com.kodepad.irc.logging.LoggerFactory
 import com.kodepad.irc.logging.Markers.TEST_FLOW
 import com.kodepad.irc.network.NetworkImpl
+import com.kodepad.irc.state.MutableNetworkState
 import com.kodepad.kotlinx.coroutines.runBlockingTest
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.test.Test
@@ -38,7 +38,7 @@ class MessageHandlerUnitTest {
             )
         )
 
-        val networkState = NetworkState()
+        val mutableNetworkState = MutableNetworkState()
 
         val mockConnection = object : Connection {
             override suspend fun connect() {
@@ -71,21 +71,21 @@ class MessageHandlerUnitTest {
 
         val eventDispatcher = EventDispatcherImpl()
 
-        val commandHandlerFactory = CommandHandlerFactory(mockConnection, networkState, eventDispatcher)
+        val commandHandlerFactory = CommandHandlerFactory(mockConnection, mutableNetworkState, eventDispatcher)
         val messageHandler = MessageHandler(
             commandHandlerFactory,
             eventDispatcher
         )
 
         val network = NetworkImpl(
-            networkState,
+            mutableNetworkState,
             mockConnection,
             messageHandler,
             eventDispatcher,
             coroutineScope,
         )
 
-        network.addEventListener(Message::class, rawMessageEventListener)
+        network.registerEventListener(Message::class, rawMessageEventListener)
 
         val nickCommand = NickCommand(
             "testNickname",
